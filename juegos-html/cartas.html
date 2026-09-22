@@ -1,24 +1,70 @@
 <!DOCTYPE html>
 <html>
     <head>
+        <meta charset="UTF-8">
 
+        <!-- Título que aparece en la pestaña del navegador -->
+        <title>Juedo de cartas</title>
+
+        <!-- Hoja de estilos -->
+        <link href="/css/estilos.css" rel="stylesheet">
     </head>
     <body>
         <header>
-            <!--h1 con nombre de la pagina-->
+
             <nav> 
                 <ul>
-                    <li><a href="../index.html">INDEX</a></li>
+                    <li><a href="/index.html">INDEX</a></li>
                     <li><a href="cartas.html">CARTAS</a></li>
                     <li><a href="dados.html">DADOS</a></li>
                     <li><a href="trivia.html">TRIVIA</a></li>
-                    <li><a href="../puntajes.html">PUNTAJES</a></li>
-                    <li><a href="../informacion.html">INFORMACION</a></li>
+                    <li><a href="/puntajes.html">PUNTAJES</a></li>
+                    <li><a href="/informacion.html">INFORMACION</a></li>
                 </ul>
             </nav>
         </header>
         <main>
+            <!-- Titulo e instrucciones -->
+            <section id="memotestPresentacion">
 
+                <h1>Memotest</h1>
+
+                <p>
+                    Encontrá todas las parejas de cartas en la menor cantidad de intentos posible.
+                    Seleccioná dos cartas para descubrir si son iguales.
+                </p>
+
+            </section>
+
+             <!-- Informacion de la partida -->
+            <section id="memotestInformacionPartida">
+
+                <p>Intentos: <span id="intentos">0</span></p>
+
+                <p>Parejas encontradas:
+                    <span id="parejasEncontradas">0</span>
+                </p>
+
+            </section>
+
+            <!-- Tablero del juego con 12 parejas -->
+            <section id="tableroMemotest">
+
+                <h2>Encontrá las parejas</h2>
+
+                <div id="tableroCartas"></div>
+
+            </section>
+
+             <!-- Boton para reiniciar -->
+            <section id="controlesMemotest">
+
+                <button id="reiniciar">Reiniciar juego</button>
+
+            </section>
         </main>
+
+        <!-- JavaScript -->
+        <script src="/js/cartas.js"></script>
     </body>
 </html>
