@@ -14,7 +14,8 @@ const contadorCorrectas = document.querySelector ('#triviaCorrectas');
 const estado = document.querySelector ('#triviaEstado');
 
 const preguntas = document.querySelector ('#triviaPreguntas');
-const bandera = document.querySelector ('#triviaBandera');
+const titulo = document.querySelector ('#triviaBandera');
+const bandera = document.querySelector ('#imgBandera');
 const opciones = document.querySelector ('#triviaOpciones');
 const botonSiguiente = document.querySelector ('#triviaSiguiente');
 
@@ -83,8 +84,26 @@ async function cargarPaises() {
             console.log(paisesConBandera.length);
 
             let pregunta = generarPregunta();
-            let paisCorrecto = pregunta[0]; //Almaceno la respuesta correcta en su propia variable
+            let paisCorrecto = pregunta.correcto; //Almaceno la respuesta correcta en su propia variable
+            
+            bandera.innerHTML = '<img src="' + pregunta.correcto.flag.url_png + '">'; //muestro en el HTML la bandera del pais correcto
+            
+            pregunta.opciones.forEach(pais => {
+            opciones.innerHTML += '<button type="button" name="' + pais.names.translations.spa.common + '">' + pais.names.translations.spa.common + '</button>';
+            });
+            console.log(opciones.innerHTML);
 
+            let botones = opciones.querySelectorAll('button');
+
+            botones.forEach(boton => {
+                boton.addEventListener('click', function () {
+                    if (boton.name == pregunta.correcto.names.translations.spa.common) {
+                        console.log("Correcto");
+                    } else {
+                        console.log("Incorrecto");
+                    }
+                });
+            });
         }
 
     } catch (error) {
@@ -114,15 +133,18 @@ function generarPregunta () {
         opcionesPregunta.push(pais);
     });
 
-    console.log (paisCorrecto.names.translations.spa.common);        
+    /*console.log (paisCorrecto.names.translations.spa.common);        
     opcionesPregunta.forEach(pais => {
         console.log(pais.names.translations.spa.common);
-    });
+    });*/
 
     let opcionesMezcladas = mezclar(opcionesPregunta);
-    console.log (opcionesMezcladas);
+    //console.log (opcionesMezcladas);
     
-    return opcionesMezcladas;
+    return {
+    opciones: opcionesMezcladas,
+    correcto: paisCorrecto
+    };
 }
 
 
