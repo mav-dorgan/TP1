@@ -38,7 +38,6 @@ let paises = [];
 let paisesConBandera = [];
 
 //la funcion pide a la Api 25 paises, los convierte a formato json y los alamcena en el array de paises. Luego pregunta si quedan mas paises por pedir, si la respuesta es si, se agrega un +25 al offset y se hace un nuevo pedido. Esta suma al offset permita que se pida a partir del pais 26 y no se repitan los mismos de antes.
-
 async function cargarPaises() {
     try {
         const url = "https://api.restcountries.com/countries/v5?offset=" + offset;
@@ -81,6 +80,11 @@ async function cargarPaises() {
             });
 
             console.log(paisesConBandera.length);
+
+            let pregunta = generarPregunta();
+            let paisCorrecto = pregunta[0]; //Almaceno la respuesta correcta en su propia variable
+            let opcionesMezcladas = mezclar(pregunta);
+
         }
 
     } catch (error) {
@@ -89,24 +93,46 @@ async function cargarPaises() {
 
     }
 }
+
 cargarPaises ();
 
+//Creo una funcion para generar los 4 paises utilizados en la opcion multiple, incluyendo el pais con la bandera correcta
 function generarPregunta () {
-    let opcionesPreguntas = [];
+    let opcionesPregunta = [];
 
-    //Se determina aleatoriamente el pais correcto
+    //Se determina aleatoriamente el pais correcto y se guarda en la primera posicion del array
     let numeroCorrecto = Math.floor(Math.random()*paisesConBandera.length);
-    let paisCorrecto = paisesConBandera[numero];
+    let paisCorrecto = paisesConBandera[numeroCorrecto];
 
-    opcionesPreguntas.push(paisCorrecto);
+    opcionesPregunta.push(paisCorrecto);
 
-    //Se deterinan los otros paises para las opciones incorrectas, corroborando que no se repita el mismo pais de la opcion correcta.
-    while (opcionesPreguntas.length < 4) {
+    //Se determinan los otros paises para las opciones incorrectas,luego se guardan tambien en el array.
+    while (opcionesPregunta.length < 4) {
         let numeroIncorrecto = Math.floor(Math.random()*paisesConBandera.length);
         let paisIncorrecto = paisesConBandera[numeroIncorrecto];
+        
+        //corroboro que no haya ninguna opcion repetida
+        let repetido = false;
 
-        if (paisIncorrecto != paisCorrecto) {
-            opcionesPreguntas.push(paisIncorrecto);
+        opcionesPregunta.forEach(pais => {
+            if (pais == paisIncorrecto) {
+                repetido = true;
+            }
+        });
+
+        if (repetido == false) {
+            opcionesPregunta.push(paisIncorrecto);
         }
     }
+        console.log (paisCorrecto.names.translations.spa);
+        opcionesPregunta.forEach(pais => {
+            console.log(pais.names.translations.spa);
+        });
+    return opcionesPregunta
+}
+
+
+//Mezclo las opciones para que la primera no sea siempre la correcta
+function mezclar(arreglo) {
+    return [...arreglo].sort(() => Math.random() - 0.5);
 }
