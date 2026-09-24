@@ -39,41 +39,55 @@ let paisesConBandera = [];
 
 //la funcion pide a la Api 25 paises, los convierte a formato json y los alamcena en el array de paises. Luego pregunta si quedan mas paises por pedir, si la respuesta es si, se agrega un +25 al offset y se hace un nuevo pedido. Esta suma al offset permita que se pida a partir del pais 26 y no se repitan los mismos de antes.
 
-function cargarPaises() {
-    const url = "https://api.restcountries.com/countries/v5?offset=" + offset;
-    
-    fetch(url, {
-        headers: {
-            "Authorization": "Bearer " + key
-        }
-    })
-    .then(function (respuesta) {
-        return respuesta.json();
-    })
-    .then(function (datos) {
+async function cargarPaises() {
+    try {
+        const url = "https://api.restcountries.com/countries/v5?offset=" + offset;
 
-        datos.data.objects.forEach(function (pais) {
-                paises.push(pais);
+        const respuesta = await fetch(url, {
+            headers: {
+                "Authorization": "Bearer " + key
+            }
+        });
+
+        //Verifica que no haya errores
+        if (!respuesta.ok) {
+            throw new Error("No se pudieron cargar los países");
+        }
+
+        const datos = await respuesta.json();
+
+        datos.data.objects.forEach(pais => {
+            paises.push(pais);
         });
 
         console.log("Países cargados:", paises.length);
 
+        //si no hay errores continua con la carga de todos los paises
         if (datos.data.meta.more == true && paises.length < 250) {
+
             offset = offset + 25;
-            cargarPaises();
+            await cargarPaises();
 
         } else {
 
             console.log("Todos los países fueron cargados");
             console.log(paises.length);
-            
+
             //Como no todos los paises tienen cargada una bandera hago un if que recorra el array y se quede solo con aquellos que tienen una foto de la bandera.
-            paises.forEach (function (pais) {
-            if (pais.flag.url_png != "") {
-                paisesConBandera.push(pais);
-            }})
-            console.log (paisesConBandera.length);
-        }})
+            paises.forEach(pais => {
+                if (pais.flag.url_png != "") {
+                    paisesConBandera.push(pais);
+                }
+            });
+
+            console.log(paisesConBandera.length);
+        }
+
+    } catch (error) {
+
+        console.log("Ocurrió un error:", error);
+
+    }
 }
 cargarPaises ();
 
