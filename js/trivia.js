@@ -24,6 +24,7 @@ const resultado = document.querySelector ('#triviaResultado');
 const puntaje = document.querySelector ('#triviaPuntaje');
 const jugador = document.querySelector ('#triviaJugador');
 const botonReiniciar = document.querySelector ('#triviaReiniciar');
+final.hidden = true;
 
 //=======================================
 //JUEGO PRINCIPAL: CREACION DE PREGUNTAS
@@ -33,7 +34,7 @@ const botonReiniciar = document.querySelector ('#triviaReiniciar');
 
 // La API solo me permite pedir de hasta 25 paises asi que debo hacer varios pedidos agregando un offset que corre a los siguiente 25 paises
 let offset = 0;
-const key = 'MI_API_KEY'; // esta api key esta restringida a ser usada solo con ciertas paginas como la pagina de github pages de este repositorio, por lo que no es un problema publicarla
+const key = 'rc_live_ba599f658cb54d278c6fe3f42078a83b'; // esta api key esta restringida a ser usada solo con ciertas paginas como la pagina de github pages de este repositorio, por lo que no es un problema publicarla
 
 let paises = [];
 let paisesConBandera = [];
@@ -222,6 +223,18 @@ function mostrarOpciones(pregunta) {
             //Actualizo el contador de vidas y puntaje
             vidas.innerHTML = 'Vidas: ' + vidasJugador;
             contadorCorrectas.innerHTML = 'Puntos: ' + puntos;
+            
+            //Corroboro que queden vidas y sino voy al final
+            if (vidasJugador == 0) {
+                console.log('Fin del juego');
+                terminarJuego();
+            }
+
+            //corroboro que queden preguntas y sino voy al final
+            if (paisesUsados.length == paisesConBandera.length) {
+                console.log('Se adivinaron todos los países');
+                terminarJuego();
+            }
 
             //Deshabilito los botones
             botones.forEach(boton => {
@@ -243,3 +256,18 @@ botonSiguiente.addEventListener('click', function () {
     botonSiguiente.hidden = true;
     };
 });
+
+/*=======================
+     FIN DEL JUEGO
+=========================*/
+
+//Habilito el fin del juego al llegar a 0 vidas o terminar las preguntas.
+function terminarJuego() {
+
+    juego.hidden = true;
+    final.hidden = false;
+
+    resultado.innerHTML = '¡Se terminaron tus vidas!';
+    puntaje.innerHTML = 'Puntaje final: ' + puntos;
+
+}
