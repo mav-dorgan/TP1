@@ -12,6 +12,7 @@ const progreso = document.querySelector ('#triviaProgreso');
 const vidas = document.querySelector ('#triviaVidas');
 const contadorCorrectas = document.querySelector ('#triviaCorrectas');
 const estado = document.querySelector ('#triviaEstado');
+juego.hidden = true;
 
 const preguntas = document.querySelector ('#triviaPreguntas');
 const titulo = document.querySelector ('#triviaBandera');
@@ -34,7 +35,7 @@ final.hidden = true;
 
 // La API solo me permite pedir de hasta 25 paises asi que debo hacer varios pedidos agregando un offset que corre a los siguiente 25 paises
 let offset = 0;
-const key = 'rc_live_ba599f658cb54d278c6fe3f42078a83b'; // esta api key esta restringida a ser usada solo con ciertas paginas como la pagina de github pages de este repositorio, por lo que no es un problema publicarla
+const key = 'MI_API_KEY'; // esta api key esta restringida a ser usada solo con ciertas paginas como la pagina de github pages de este repositorio, por lo que no es un problema publicarla
 
 let paises = [];
 let paisesConBandera = [];
@@ -46,6 +47,8 @@ let numeroPregunta = 0;
 
 //la funcion pide a la Api 25 paises, los convierte a formato json y los alamcena en el array de paises. Luego pregunta si quedan mas paises por pedir, si la respuesta es si, se agrega un +25 al offset y se hace un nuevo pedido. Esta suma al offset permita que se pida a partir del pais 26 y no se repitan los mismos de antes.
 async function cargarPaises() {
+    estado.innerHTML = 'Cargando preguntas...';
+
     try {
         const url = 'https://api.restcountries.com/countries/v5?offset=' + offset;
 
@@ -58,6 +61,7 @@ async function cargarPaises() {
         //Verifica que no haya errores
         if (!respuesta.ok) {
             throw new Error('No se pudieron cargar los países');
+            estado.innerHTML = 'No se pudieron cargar las preguntas.';
         }
 
         const datos = await respuesta.json();
@@ -88,19 +92,25 @@ async function cargarPaises() {
 
             console.log(paisesConBandera.length);
 
-            let pregunta = generarPregunta();
-            let paisCorrecto = pregunta.correcto; //Almaceno la respuesta correcta en su propia variable
-            
+            estado.innerHTML = '';
+            generarPregunta();
         }
     } catch (error) {
         console.log('Ocurrió un error:', error);
     }
 }
 
-cargarPaises ();
+botonComenzar.addEventListener ('click', function() {
+    inicio.hidden =true;
+    juego.hidden = false;
+    cargarPaises ();
+
+})
 
 //Creo una funcion para generar los 4 paises utilizados en la opcion multiple, incluyendo el pais con la bandera correcta
 function generarPregunta () {
+
+    botonSiguiente.hidden = true;
 
     numeroPregunta ++;
 
@@ -112,7 +122,7 @@ function generarPregunta () {
 
     let paisesDisponibles = buscarDisponibles (paisesConBandera);
 
-    let paisCorrecto = elegirCorrecto(paisesDisponibles);
+    let paisCorrecto = elegirCorrecto(paisesDisponibles); //Almaceno la respuesta correcta en su propia variable
 
     opcionesPregunta.push(paisCorrecto);
     paisesUsados.push(paisCorrecto);
@@ -206,18 +216,15 @@ function mostrarOpciones(pregunta) {
     botones.forEach(boton => {
         boton.addEventListener('click', function () {
 
+            //se muestra al jugador si su respuesta fue correcta o incorrecta agregando una clase al boton que luego le pondra un color diferente.
+            //Dependiendo el resultado sumo puntos o resto vidas
             if (boton.name == pregunta.correcto.names.translations.spa.common) {
-
                 puntos += 100;
-                console.log('Correcto');
-                console.log('Puntos:', puntos);
-
+                boton.classList.add ('triviaCorrecto')
             } else {
 
                 vidasJugador -= 1;
-                console.log('Incorrecto');
-                console.log('Vidas:', vidasJugador);
-
+                boton.classList.add ('triviaIncorrecto')
             }
             
             //Actualizo el contador de vidas y puntaje
@@ -227,17 +234,20 @@ function mostrarOpciones(pregunta) {
             //Corroboro que queden vidas y sino voy al final
             if (vidasJugador == 0) {
                 console.log('Fin del juego');
-                terminarJuego();
+                terminarJuego('No hay más vidas disponibles!');
             }
 
             //corroboro que queden preguntas y sino voy al final
             if (paisesUsados.length == paisesConBandera.length) {
                 console.log('Se adivinaron todos los países');
-                terminarJuego();
+                terminarJuego('Adivinaste todos los países!');
             }
 
             //Deshabilito los botones
             botones.forEach(boton => {
+                if (boton.name == pregunta.correcto.names.translations.spa.common) {
+                    boton.classList.add('triviaCorrecto');
+                }
                 boton.disabled = true;
             });
             
@@ -262,12 +272,27 @@ botonSiguiente.addEventListener('click', function () {
 =========================*/
 
 //Habilito el fin del juego al llegar a 0 vidas o terminar las preguntas.
-function terminarJuego() {
+function terminarJuego(mensaje) {
 
     juego.hidden = true;
     final.hidden = false;
 
-    resultado.innerHTML = '¡Se terminaron tus vidas!';
+    resultado.innerHTML = 'Juego terminado: '+ mensaje;
     puntaje.innerHTML = 'Puntaje final: ' + puntos;
 
 }
+
+//Boton para reiniciar el juego, resetea todos los puntajes y vida y vuelve a mostrar una pregunta.
+
+botonReiniciar.addEventListener('click', function () {
+
+    vidasJugador = 3;
+    puntos = 0;
+    numeroPregunta = 0;
+    paisesUsados = [];
+
+    juego.hidden = false;
+    final.hidden = true;
+
+    generarPregunta()
+});
