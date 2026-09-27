@@ -22,14 +22,84 @@ Dorgan (44448957), Hochnadel (), La Rosa () <br></h2>
   Una vez recibida la información, los datos son recorridos mediante forEach(). Durante este proceso se crea dentro de un array, un objeto para cada país que contiene únicamente la información necesaria para la trivia, principalmente: el nombre y el URL del PNG de la bandera. El procesamiento de los datos permite que la trivia no tenga que trabajar constantemente con toda la información que proporciona la API, sino solamente con los datos necesarios para el funcionamiento del juego. La información obtenida de REST Countries se utiliza para generar las preguntas de la trivia. En cada pregunta se selecciona un país como respuesta correcta, al igual que su bandera correspondiente; y se obtienen otros tres países para utilizarlos como respuestas incorrectas. De esta manera, el jugador recibe cuatro opciones de banderas.
 </p>
 
-<h3>Página de cartas: Memotest</h3>
-Para la página de cartas se decidió desarrollar un memotest con temática de naturaleza. El objetivo del juego es encontrar todas las parejas de cartas que contienen la misma imagen, intentando completar la partida en la menor cantidad de intentos posibles. Antes de comenzar con la programación, se definieron algunas de las características principales del juego, como los niveles de dificultad, la cantidad de cartas, el registro de intentos y la posibilidad de reiniciar la partida.
+<h3>Juego de cartas — Memotest</h3>
 
-El desarrollo comenzó con la creación de la estructura HTML de la página. Se organizaron diferentes secciones para presentar las instrucciones del juego, ingresar el nombre del jugador, seleccionar el nivel de dificultad, mostrar la información de la partida y contener el tablero de cartas. También se incorporó un botón para comenzar la partida y otro para reiniciarla. La selección de dificultad se realizó mediante un elemento `select`, con tres opciones: fácil, medio y difícil. Cada nivel determina la cantidad de pares que tendrá el tablero: 6 pares en el nivel fácil, 8 en el medio y 10 en el difícil.
+<p>
+    El juego consiste en un memotest de temática naturaleza. El jugador debe encontrar
+    todas las parejas de cartas iguales, eligiendo un nivel de dificultad que determina
+    la cantidad de cartas del tablero.
+</p>
 
-Una vez realizada la estructura HTML, se comenzó a trabajar en JavaScript para generar las cartas de manera dinámica. Mediante `querySelector()` se selecciona el contenedor del tablero y, a través de un evento `addEventListener()` asociado al botón de inicio, se obtiene el nivel de dificultad elegido por el jugador. Luego, una estructura `switch` determina la cantidad de cartas que se deben generar y se utiliza `innerHTML` para incorporarlas al tablero. En esta primera etapa se trabajó con las imágenes del dorso de las cartas, que funcionan como la parte visible del mazo antes de descubrir su contenido.
+<h4>Estructura HTML</h4>
 
-A partir de esta estructura inicial, se comenzó a desarrollar la función `generarMazo()`, cuya finalidad es crear un array con las imágenes que se utilizarán durante la partida. La función recibe como parámetro la cantidad de pares y utiliza un ciclo `while` para generar las cartas de manera aleatoria hasta que se completen todos los pares. Para esto se utiliza `Math.random()` junto con `Math.floor()`. También se implementó un mecanismo de control de repeticiones, ya que cada imagen debe aparecer dos veces para formar una pareja y no superar esa cantidad.
+<p>Se creó la estructura de la página del juego, incluyendo:</p>
+
+<ul>
+    <li>Una sección de presentación con las instrucciones.</li>
+    <li>Un formulario para ingresar el nombre del jugador y seleccionar el nivel.</li>
+    <li>Un botón para comenzar la partida.</li>
+    <li>Una sección con los datos de la partida: intentos, parejas encontradas y nivel elegido.</li>
+    <li>Un contenedor para generar las cartas dinámicamente.</li>
+    <li>Un botón para reiniciar el juego.</li>
+</ul>
+
+<p>El nivel se selecciona mediante un <code>select</code> con tres opciones:</p>
+
+<ul>
+    <li>Fácil: 6 pares (12 cartas).</li>
+    <li>Medio: 8 pares (16 cartas).</li>
+    <li>Difícil: 10 pares (20 cartas).</li>
+</ul>
+
+<h4>Generación del mazo</h4>
+
+<p>
+    En JavaScript se creó la función <code>generarMazo()</code>, que genera las cartas
+    según la cantidad de pares seleccionada. Se utiliza un <code>while</code> para
+    completar el mazo y <code>Math.random()</code> junto con <code>Math.floor()</code>
+    para seleccionar imágenes al azar. También se controla que cada imagen aparezca
+    como máximo dos veces para formar las parejas.
+</p>
+
+<p>
+    Cada carta se guarda en un array aparte como un objeto con un identificador de imagen (el número de la imagen), la ruta de la
+    imagen y los estados de la carta (visible u oculta) y de la pareja(true si se encontró y false si aún no).
+</p>
+
+<h4>Inicio de la partida</h4>
+
+<p>
+    Al presionar <strong>“Comenzar partida”</strong>, se obtiene el nombre y el nivel
+    seleccionado mediante <code>querySelector()</code>. Antes de comenzar se verifica
+    que el jugador haya ingresado un nombre y seleccionado un nivel.
+</p>
+
+<p>
+    Mediante un <code>switch</code> se genera la cantidad de cartas correspondiente al
+    nivel elegido. Las imágenes se agregan al tablero utilizando <code>innerHTML</code>
+    dentro de un ciclo <code>for</code>.
+</p>
+
+<p>
+    Una vez iniciada la partida, se deshabilita el campo de configuración y se habilita
+    el botón de reinicio.
+</p>
+
+<h4>Comparación de cartas</h4>
+
+<p>
+    Se creó la función <code>sonIguales()</code>, que compara los identificadores de
+    las imágenes seleccionadas. Si coinciden, las cartas pasan a estado visible y se
+    incrementa la cantidad de parejas encontradas.
+</p>
+
+<h4>Reinicio</h4>
+
+<p>
+    El botón <strong>“Reiniciar juego”</strong> elimina las cartas del tablero,
+    reinicia los contadores y vuelve a habilitar el formulario para comenzar una
+    nueva partida.
+</p>
 
 <h3>Declaración del uso de IA</h3>
 - Ayuda para pensar los juegos
@@ -38,6 +108,16 @@ A partir de esta estructura inicial, se comenzó a desarrollar la función `gene
 <p>Declaro el uso de Inteligencia Artificial a través de la aplicación ChatGPT. La IA fue utilizada en primer lugar como ayuda para deconstruir la página en pseudocódigo a modo de guía y buscar mejorar la idea original. Luego se le encargó la lectura del documento de la API para sacar los términos y puntos principales, y saber realizar el pedido correctamente. En cuanto a la hora de programar, fue utilizada como un apoyo secundario a la hora de resolver problemas, para evitar estar tiempo innecesario resolviendo un mismo problema. Fue utilizada como soporte y ayuda cuando no se podían resolver errores en el código Js por propia cuenta. En todos los casos primero se escribió el código por mi cuenta y luego utilizaba la IA en caso de encontrar un obstáculo que no se podía resolver.</p>
 
 <h4>Gabriella La Rosa:</h4>
-<p>Declaro el uso de Inteligencia Artificial a través de la aplicación ChatGPT y claude. 
-ChatGPT: La utilicé para la redacción de la documentación y de esta declaración, la organización las ideas del juego, la definición de sus funcionalidades y la división del problema general en etapas para facilitar la programación.
-Claude: La usé para comprender conceptos, consultar dudas y analizar posibles errores en el código. También sirvió como apoyo para explorar distintas formas de resolver los problemas que surgían durante el desarrollo, buscando comprender el funcionamiento de las instrucciones y su relación con el resto del programa.
+<p>
+    Declaro el uso de Inteligencia Artificial a través de las aplicaciones ChatGPT y Claude.
+    <strong>ChatGPT:</strong> La utilicé para la redacción de la documentación y de esta declaración,
+    la organización de las ideas del juego, la definición de sus funcionalidades y la división del
+    problema general en etapas para facilitar la programación. También generé un pseudocódigo que
+    me sirvió para orientarme y estructurar el paso a paso del algoritmo.
+    <strong>Claude:</strong> La usé para comprender conceptos, consultar dudas y analizar posibles
+    errores en el código. También sirvió como apoyo para explorar distintas formas de resolver los
+    problemas que surgían durante el desarrollo. Además, la utilicé para generar comentarios
+    en partes del código donde se me había pasado agregarlos, editar los textos de los commits para
+    que quedaran más claros y mejor redactados, y detectar y corregir posibles bugs que quedaron
+    luego de haber escrito el código.
+</p>
