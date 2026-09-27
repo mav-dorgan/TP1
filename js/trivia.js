@@ -58,7 +58,7 @@ PEDIDO A LA API
 
 
 let offset = 0; // La API solo me permite pedir de hasta 25 paises asi que debo hacer varios pedidos agregando un offset que corre a los siguiente 25 paises
-const key = 'MI_API_KEY'; // esta api key esta restringida a ser usada solo con ciertas paginas como la pagina de github pages de este repositorio, por lo que no es un problema publicarla
+const key = 'rc_live_6bf916e7431641fab87668e2079ebe00'; // esta api key esta restringida a ser usada solo con ciertas paginas como la pagina de github pages de este repositorio, por lo que no es un problema publicarla
 
 async function cargarPaises() {
     estado.innerHTML = 'Cargando preguntas...';
