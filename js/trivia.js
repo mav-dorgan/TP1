@@ -91,7 +91,7 @@ async function cargarPaises() {
         //Verifica que no haya errores
         if (!respuesta.ok) {
             throw new Error('No se pudieron cargar los países');
-            estado.innerHTML = 'No se pudieron cargar las preguntas.';
+            estado.innerHTML = 'No se pudieron cargar las preguntas. Por favor refresque la página';
         }
 
         //los convierte a formato json
@@ -102,8 +102,6 @@ async function cargarPaises() {
             paises.push(pais);
         });
 
-        console.log('Países cargados:', paises.length);
-
         //pregunta si quedan mas paises por pedir, si la respuesta es si, se agrega un +25 al offset y se hace un nuevo pedido. Esta suma al offset permita que se pida a partir del pais 26 y no se repitan los mismos de antes.
         if (datos.data.meta.more == true && paises.length < 250) {
 
@@ -112,9 +110,6 @@ async function cargarPaises() {
 
         } else {
 
-            console.log('Todos los países fueron cargados');
-            console.log(paises.length);
-
             //Como no todos los paises tienen cargada una bandera hago un if que recorra el array y se quede solo con aquellos que tienen una foto de la bandera.
             paises.forEach(pais => {
                 if (pais.flag.url_png != "") {
@@ -122,13 +117,12 @@ async function cargarPaises() {
                 }
             });
 
-            console.log(paisesConBandera.length);
-
             estado.innerHTML = '';
             generarPregunta();
         }
     } catch (error) {
         console.log('Ocurrió un error:', error);
+        alert ('ocurrio un error, por favor refresque la página');
     }
 }
 
@@ -262,13 +256,11 @@ function mostrarOpciones(pregunta) {
             
             //Corroboro que queden vidas y sino voy al final
             if (vidasJugador == 0) {
-                console.log('Fin del juego');
                 terminarJuego('No hay más vidas disponibles!');
             }
 
             //corroboro que queden preguntas y sino voy al final
             if (paisesUsados.length == paisesConBandera.length) {
-                console.log('Se adivinaron todos los países');
                 terminarJuego('Adivinaste todos los países!');
             }
 
@@ -345,6 +337,6 @@ botonReiniciar.addEventListener('click', function () {
     nombreJugador.value = '';
 
     final.hidden = true;
-    inicio.hidden = true;
+    inicio.hidden = false;
 
 });
