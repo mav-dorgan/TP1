@@ -206,19 +206,56 @@ button {
     padding: 0.8rem 1.5rem;
     border: none;
     border-radius: 0.7rem;
-    background-color: #9F86C0;
+    background-color: #493657;
     color: #FFF8E5;
     font-family: inherit;
     font-size: 1rem;
 }
 
 button:hover {
-    background-color: #493657;
+    background-color: #9F86C0;
     transform: scale(1.03);
 }
 
 button:disabled {
     opacity: 0.8;
+}
+
+.botonLargo {
+    display: block;
+    margin: 1.5rem auto 0;
+    width: 90%;
+    text-align: center;
+}
+
+/*=========================*/
+/*    FORMULARIO JUGADOR   */
+/*=========================*/
+
+.formularioJuego {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.8rem;
+    margin: 2rem 0;
+}
+
+.formularioJuego input,
+.formularioJuego select {
+    width: 60%;
+    padding: 0.8rem;
+    border: 0.15rem solid #9F86C0;
+    border-radius: 0.7rem;
+    background-color: #FFF8E5;
+    color: #493657;
+    font-family: inherit;
+    font-size: 1rem;
+}
+
+.formularioJuego input:focus,
+.formularioJuego select:focus {
+    outline: none;
+    border-color: #493657;
 }
 
 /*=========================*/
@@ -249,22 +286,6 @@ button:disabled {
     margin: 1rem 0;
     color: #9F86C0;
     font-weight: bold;
-}
-
-/*BOTONES*/
-
-#triviaComenzar,
-#triviaReiniciar {
-    display: block;
-    margin: 1.5rem auto 0;
-    background-color: #493657;
-    width: 90%;
-    text-align: center;
-}
-
-#triviaComenzar:hover,
-#triviaReiniciar:hover {
-    background-color: #9F86C0;
 }
 
 /*STATS*/
@@ -300,7 +321,6 @@ button:disabled {
     border-radius: 1rem;
     box-shadow: 0 0.4rem 1rem rgba(73, 54, 87, 0.2);
 }
-
 
 /* OPCIONES*/
 
@@ -374,25 +394,60 @@ button:disabled {
     font-weight: bold;
 }
 
-#triviaJugador {
+/*=========================*/
+/*      CARTAS ESTILOS     */
+/*=========================*/
+
+.seccion-juego {
+    max-width: 60rem;
+    margin: 2rem auto;
+    padding: 2rem;
+    border-radius: 1.5rem;
+    background-color: #D2E0BF;
+    box-shadow: 0 0.5rem 1.5rem rgba(73, 54, 87, 0.15);
+    text-align: center;
+}
+
+.cartasStats {
     display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 0.8rem;
-    margin: 2rem 0;
+    justify-content: center;
+    gap: 1rem;
+    margin: 2rem auto;
+    flex-wrap: wrap;
 }
 
-#triviaJugador input {
-    width: 60%;
-    padding: 0.8rem;
-    border: 0.15rem solid #9F86C0;
+.cartasStats p {
+    margin: 0;
+    padding: 0.8rem 1.2rem;
     border-radius: 0.7rem;
-    background-color: #FFF8E5;
-    color: #493657;
-    font-size: 1rem;
+    background-color: #D2E0BF;
+    font-weight: bold;
 }
 
-#triviaJugador input:focus {
-    outline: none;
-    border-color: #493657;
+/*GRILLA DEL TABLERO*/
+
+#tableroCartas {
+    max-width: 50rem;
+    margin: 2rem auto;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1rem;
+}
+
+#tableroCartas img {
+    width: 100%;
+    aspect-ratio: 1; /*hace que la carta sea cuadrada*/
+    object-fit: cover; /*hace que la imagen ocupe el cuadrado sin deformarse*/
+    border-radius: 0.8rem;
+    cursor: pointer;
+    box-shadow: 0 0.3rem 0.8rem rgba(73, 54, 87, 0.2);
+}
+
+#tableroCartas img:hover {
+transform: scale(1.03);
+}
+
+#tableroCartas img.encontrada {
+    opacity: 0.65;
+    box-shadow: 0 0 0 0.2rem #9F86C0;
 }
