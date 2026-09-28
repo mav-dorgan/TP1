@@ -1,7 +1,214 @@
-.triviaCorrecto {
-    background-color: green;
+/* ============================= */
+/* ESTILOS GENERALES             */
+/* ============================= */
+
+* {
+    box-sizing: border-box;
 }
 
-.triviaIncorrecto {
-    background-color: red;
+body {
+    margin: 0;
+    padding:0;
 }
+
+#contenedor {
+    width: 100%;
+    max-width: 1920px;
+    min-height: 100vh;
+    margin: 0;
+    padding: 0;
+    background-color: #FFF8E5;
+    display: flex;
+    flex-direction: column;
+    font-family: "Calistoga", serif;
+    font-weight: 400;
+    font-style: normal;
+}
+
+footer, header {
+    width:100%;
+    margin: 0;
+    padding: 1.5rem 5%;
+    background-color: #80689F;
+}
+
+footer {
+    margin-top: 1rem;
+    color: #FFF8E5;
+}
+
+footer a {
+    color: #D2E0BF;
+}
+
+main {
+    flex: 1;
+    text-align: center;
+}
+
+header {
+    width: 100%;
+    margin: 0;
+    padding: 1.5rem 5%;
+    background-color: #80689F;
+
+    display: flex;
+    align-items: center;
+}
+
+/* ============================= */
+/*      MENU DE NAVEGACION       */
+/* ============================= */
+
+/* MARCA DEL SITIO EN EL INDEX */
+
+.navMarca {
+    width: 25%;
+    text-align: left;
+}
+
+.navMarca h1 {
+    margin: 0;
+    color: #FFF8E5;
+    font-family: "Carter One", "Calistoga", serif;
+    font-size: 1.8rem;
+}
+
+.navMarca p {
+    margin: 0.3rem 0 0;
+    color: #D2E0BF;
+    font-family: "Calistoga", serif;
+    font-size: 1rem;
+}
+
+/* NAVEGACION */
+
+nav {
+    width: 75%;
+    display: flex;
+    align-items: center;
+}
+
+.navJuegos {
+    width: 75%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 2rem;
+}
+
+.navInfo {
+    width: 25%;
+    text-align: right;
+}
+
+/* PAGINAS QUE TIENEN "INICIO" */
+/*el :has() actua como un "if" de js, donde si el selector contiene la clase en el parentesis se aplican las propiedades*/
+
+nav:has(.navInicio) {
+    width: 100%;
+}
+
+.navInicio {
+    width: 25%;
+    text-align: left;
+}
+
+nav:has(.navInicio) .navJuegos {
+    width: 50%;
+}
+
+nav:has(.navInicio) .navInfo {
+    width: 25%;
+}
+
+/* LINKS */
+
+nav a {
+    color: #FFF8E5;
+    text-decoration: none;
+    font-size: 1.4rem;
+    font-weight: bold;
+}
+
+nav a:hover {
+    color: #D2E0BF;
+}
+
+/*====================*/
+/*      TITULOS       */
+/*====================*/
+
+h2 {
+    margin-bottom: 2rem;
+    color: #493657;
+    font-size: 2.5rem;
+    font-family: "Carter One", "Calistoga", serif;
+    text-align: center;
+}
+
+h3 {
+    color: #493657;
+    font-family: "Carter One", "Calistoga", serif;
+    text-align: center;
+}
+
+/*====================*/
+/*      TARJETAS      */
+/*====================*/
+
+.tarjetas {
+    display: flex;
+    justify-content: space-between;
+    gap: 2rem;
+    margin: 2rem 0;
+    padding: 2rem;
+}
+
+.tarjeta {
+    width: 33%;
+    padding: 2rem;
+    border-radius: 1.5rem;
+    background-color: #D2E0BF;
+    box-shadow: 0 0.5rem 1.5rem rgba(73, 54, 87, 0.15);
+    text-align: center;
+}
+
+.centrar {
+    max-width: 40rem;
+    margin: 3rem auto;
+    padding: 2rem;
+    color: #493657;
+    font-size: 1.8rem;
+    font-family: "Carter One", "Calistoga", serif;
+    border-radius: 1.5rem;
+    background-color: #D2E0BF;
+    box-shadow: 0 0.5rem 1.5rem rgba(73, 54, 87, 0.15);
+    
+}
+
+.centrar ul {
+    margin: 1.5rem 0 0;
+    padding: 0;
+    list-style: none;
+}
+
+.centrar li {
+    margin: 0.5rem 0;
+    font-size: 1.3rem;
+}
+
+/*=========================*/
+/*      TRIVIA ESTILOS     */
+/*=========================*/
+
+#triviaOpciones button.triviaCorrecto {
+    background-color: #D2E0BF;
+    color: #493657;
+}
+
+#triviaOpciones button.triviaIncorrecto {
+    background-color: #DA9797;
+    color: #FFF8E5;
+}
+

@@ -2,65 +2,74 @@
 <html>
     <head>
         <meta charset="utf-8">
-
+        
         <!--Título que aparece en la pestaña del navegador-->
         <title>JUEGOS</title>
-
+        <link href="https://fonts.googleapis.com/css2?family=Carter+One&display=swap" rel="stylesheet">
+        <link href="https://fonts.googleapis.com/css2?family=Calistoga&display=swap" rel="stylesheet">
         <!--Vinculación con la página de estilos-->
         <link href="css/estilos.css" rel="stylesheet">
     </head>
     <body>
-        <header>
-            <!--Título que se visualiza en el header de la página-->
-            <h1>BROWSER GRAMES</h1>
-            <p>Un sitio web con tres juegos para competir por el mejor puntaje</p>
+        <div id="contenedor">
+            <header>
+                <!--Título que se visualiza en el header de la página-->
+                <div class="navMarca">
+                    <h1>BROWSER GAMES</h1>
+                    <p>Tres juegos para competir por el mejor puntaje</p>
+                </div>
 
-            <!--Menú de navegación en el header de la página-->
-            <nav> 
-                <ul>
-                    <li><a href="index.html">INDEX</a></li>
-                    <li><a href="juegos-html/cartas.html">CARTAS</a></li>
-                    <li><a href="juegos-html/dados.html">DADOS</a></li>
-                    <li><a href="juegos-html/trivia.html">TRIVIA</a></li>
-                    <li><a href="puntajes.html">PUNTAJES</a></li>
-                    <li><a href="informacion.html">INFORMACION</a></li>
-                </ul>
-            </nav>
-        </header>
+                <!--Menú de navegación en el header de la página-->
+                <nav> 
+                    <div class="navJuegos">
+                        <a href="juegos-html/trivia.html">Trivia banderas</a>
+                        <a href="juegos-html/cartas.html">Memotest</a>
+                        <a href="juegos-html/dados.html">Dados</a>
+                        <a href="puntajes.html">Puntaje</a>
+                    </div>
 
-        <!--Contenido principal de la página-->
-        <main>
-            <section>
-                <h2>Bienvenidxs!</h2>
-                <p>
-                En este sitio web vas a encontrar tres juegos distintos para poner a prueba la memoria, la suerte y los conocimientos.
-                Elegí un juego del menú de navegación para empezar a jugar, y revisá la página de puntajes para ver los mejores récords.
-                </p>
-            </section>
+                    <div class="navInfo">
+                        <a href="informacion.html">Información</a>
+                    </div>
+                </nav>
+            </header>
 
-            <!--Explicación breve de cada juego-->
-            <section>
-                <h2>A qué querés jugar hoy?</h2>
-                <article>
-                    <h3>Cartas</h3>
-                    <p>Un memotest con cartas. Tenés que encontrar todas las parejas en la menor cantidad de intentos posibles.</p>
-                </article>
-                <article>
-                    <h3>Dados</h3>
-                    <p>Jugá a los dados contra la máquina. El que se acerca más a 21 gana, el que se pasa pierde.</p>
-                </article>
-                <article>
-                    <h3>Trivia</h3>
-                    <p>Una trivia de banderas: adiviná de que país es la bandera antes de quedarte sin vidas.</p>
-                </article>
-            </section>
-        </main>
+            <!--Contenido principal de la página-->
+            <main>
+                <section>
+                    <h2>Bienvenidxs!</h2>
+                    <p>
+                    En este sitio web vas a encontrar tres juegos distintos para poner a prueba la memoria, la suerte y los conocimientos.
+                    Elegí un juego del menú de navegación para empezar a jugar, y revisá la página de puntajes para ver los mejores récords.
+                    </p>
+                </section>
 
-        <!--Contenido que se visualiza en el pie de la página-->
-        <footer>
-            <p>&copy; 2026 TP-JUEGOS — Universidad Nacional de las Artes, Informática General.</p>
-            <p>Un proyecto de Dorgan, La Rosa y Hochnadel. <a href="informacion.html">Conocé al equipo</a>.</p>
-        </footer>
+                <!--Explicación breve de cada juego-->
+                <section>
+                    <h2>A qué querés jugar hoy?</h2>
+                    <div class="tarjetas">
+                    <article class="tarjeta">
+                        <h3>Cartas</h3>
+                        <p>Un memotest con cartas. Tenés que encontrar todas las parejas en la menor cantidad de intentos posibles.</p>
+                    </article>
+                    <article class="tarjeta">
+                        <h3>Dados</h3>
+                        <p>Jugá a los dados contra la máquina. El que se acerca más a 21 gana, el que se pasa pierde.</p>
+                    </article>
+                    <article class="tarjeta">
+                        <h3>Trivia</h3>
+                        <p>Una trivia de banderas: adiviná de que país es la bandera antes de quedarte sin vidas.</p>
+                    </article>
+                    </div>
+                </section>
+            </main>
+
+            <!--Contenido que se visualiza en el pie de la página-->
+            <footer>
+                <p>&copy; 2026 TP-JUEGOS — Universidad Nacional de las Artes, Informática General.</p>
+                <p>Un proyecto de Dorgan, La Rosa y Hochnadel. <a href="informacion.html">Conocé al equipo</a>.</p>
+            </footer>
+        </div>
     </body>
 </html>
 

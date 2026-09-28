@@ -3,93 +3,103 @@
     <head>
         <meta charset="utf-8">
         <title>JUEGO DE DADOS</title>
+        <link href="https://fonts.googleapis.com/css2?family=Carter+One&display=swap" rel="stylesheet">
+        <link href="https://fonts.googleapis.com/css2?family=Calistoga&display=swap" rel="stylesheet">
         <link href="../css/estilos.css" rel="stylesheet">
     </head>
     <body>
-        <header>
-            <h1></h1>
-            <nav> 
-                <ul>
-                    <li><a href="../index.html">INDEX</a></li>
-                    <li><a href="cartas.html">CARTAS</a></li>
-                    <li><a href="dados.html">DADOS</a></li>
-                    <li><a href="trivia.html">TRIVIA</a></li>
-                    <li><a href="../puntajes.html">PUNTAJES</a></li>
-                    <li><a href="../informacion.html">INFORMACION</a></li>
-                </ul>
-            </nav>
-        </header>
+        <div id="contenedor">
+            <header>
+                <h1></h1>
+                <nav> 
+                        <div class="navInicio">
+                            <a href="../index.html">Inicio</a>
+                        </div>
 
-        <main>
-            <section>
-                <h2>DADOS</h2>
-                <p>Llegá a 21 sin pasarte</p>
-            </section>
+                        <div class="navJuegos">
+                            <a href="trivia.html">Trivia banderas</a>
+                            <a href="cartas.html">Memotest</a>
+                            <a href="dados.html">Dados</a>
+                            <a href="../puntajes.html">Puntaje</a>
+                        </div>
 
-            <!--Instrucciones del juego-->
-            <section id="instrucciones">
-                <h2>Instrucciones</h2>
-                <ol>
-                    <li>Ingresá tu nombre y apretá "Comenzar partida".</li>
-                    <li>Cada vez que tirás los 2 dados, la suma se acumula en tu total.</li>
-                    <li>Podés tirar todas las veces que quieras, o apretar "Plantarme" para quedarte con tu total.</li>
-                    <li>Si tu total supera 21, perdés.</li>
-                    <li>Si te plantás, juega la máquina: tira hasta llegar a 17 o más.</li>
-                    <li>Gana quien más se acerque a 21 sin pasarse.</li>
-                </ol>
-            </section>
+                        <div class="navInfo">
+                            <a href="../informacion.html">Información</a>
+                        </div>
+                    </nav>
+            </header>
 
-            <!--Ingreso del nombre del jugador-->
-            <section id="inicio">
-                <h2>Nueva partida</h2>
-                <form id="formInicio">
-                    <label for="nombreJugador">Tu nombre:</label>
-                    <input type="text" id="nombreJugador">
-                    <button type="button" id="btnComenzar">Comenzar partida</button>
-                </form>
-            </section>
+            <main>
+                <section>
+                    <h2>DADOS</h2>
+                    <p>Llegá a 21 sin pasarte</p>
+                </section>
 
-            <!--Zona de juego-->
-            <section id="juego">
-                <h2>Partida</h2>
+                <!--Instrucciones del juego-->
+                <section id="instrucciones">
+                    <h2>Instrucciones</h2>
+                    <ol>
+                        <li>Ingresá tu nombre y apretá "Comenzar partida".</li>
+                        <li>Cada vez que tirás los 2 dados, la suma se acumula en tu total.</li>
+                        <li>Podés tirar todas las veces que quieras, o apretar "Plantarme" para quedarte con tu total.</li>
+                        <li>Si tu total supera 21, perdés.</li>
+                        <li>Si te plantás, juega la máquina: tira hasta llegar a 17 o más.</li>
+                        <li>Gana quien más se acerque a 21 sin pasarse.</li>
+                    </ol>
+                </section>
 
-                <article id="zonaJugador">
-                    <h3 id="tituloJugador">Jugador</h3>
-                    <img src="../img/dados/dado-0.png" alt="Primer dado del jugador, sin tirar" id="dadoJugador1">
-                    <img src="../img/dados/dado-0.png" alt="Segundo dado del jugador, sin tirar" id="dadoJugador2">
-                    <p>Total: <span id="totalJugador">0</span></p>
-                </article>
+                <!--Ingreso del nombre del jugador-->
+                <section id="inicio">
+                    <h2>Nueva partida</h2>
+                    <form id="formInicio">
+                        <label for="nombreJugador">Tu nombre:</label>
+                        <input type="text" id="nombreJugador">
+                        <button type="button" id="btnComenzar">Comenzar partida</button>
+                    </form>
+                </section>
 
-                <article id="zonaMaquina">
-                    <h3>Máquina</h3>
-                    <img src="../img/dados/dado-0.png" alt="Primer dado de la máquina, sin tirar" id="dadoMaquina1">
-                    <img src="../img/dados/dado-0.png" alt="Segundo dado de la máquina, sin tirar" id="dadoMaquina2">
-                    <p>Total: <span id="totalMaquina">0</span></p>
-                </article>
+                <!--Zona de juego-->
+                <section id="juego">
+                    <h2>Partida</h2>
 
-                <!--Acciones disponibles-->
-                <div id="acciones">
-                    <button type="button" id="btnTirar" disabled>Tirar dados</button>
-                    <button type="button" id="btnPlantarse" disabled>Plantarme</button>
-                    <button type="button" id="btnNuevaPartida" disabled>Nueva partida</button>
-                </div>
+                    <article id="zonaJugador">
+                        <h3 id="tituloJugador">Jugador</h3>
+                        <img src="../img/dados/dado-0.png" alt="Primer dado del jugador, sin tirar" id="dadoJugador1">
+                        <img src="../img/dados/dado-0.png" alt="Segundo dado del jugador, sin tirar" id="dadoJugador2">
+                        <p>Total: <span id="totalJugador">0</span></p>
+                    </article>
 
-                <!--Estado del juego y resultado-->
-                <p id="mensaje">Ingresá tu nombre para comenzar.</p>
-            </section>
+                    <article id="zonaMaquina">
+                        <h3>Máquina</h3>
+                        <img src="../img/dados/dado-0.png" alt="Primer dado de la máquina, sin tirar" id="dadoMaquina1">
+                        <img src="../img/dados/dado-0.png" alt="Segundo dado de la máquina, sin tirar" id="dadoMaquina2">
+                        <p>Total: <span id="totalMaquina">0</span></p>
+                    </article>
 
-            <!--Récord guardado-->
-            <aside id="record">
-                <h2>Tu récord</h2>
-                <p id="textoRecord">Todavía no hay partidas guardadas.</p>
-            </aside>
-        </main>
+                    <!--Acciones disponibles-->
+                    <div id="acciones">
+                        <button type="button" id="btnTirar" disabled>Tirar dados</button>
+                        <button type="button" id="btnPlantarse" disabled>Plantarme</button>
+                        <button type="button" id="btnNuevaPartida" disabled>Nueva partida</button>
+                    </div>
 
-        <footer>
-            <p>&copy; 2026 TP-JUEGOS — Universidad Nacional de las Artes, Informática General.</p>
-            <p>Un proyecto de Dorgan, Hochnadel y La Rosa. <a href="../informacion.html">Conocé al equipo</a>.</p>
-        </footer>
+                    <!--Estado del juego y resultado-->
+                    <p id="mensaje">Ingresá tu nombre para comenzar.</p>
+                </section>
 
-        <script src="../js/dados.js"></script>
+                <!--Récord guardado-->
+                <aside id="record">
+                    <h2>Tu récord</h2>
+                    <p id="textoRecord">Todavía no hay partidas guardadas.</p>
+                </aside>
+            </main>
+
+            <footer>
+                <p>&copy; 2026 TP-JUEGOS — Universidad Nacional de las Artes, Informática General.</p>
+                <p>Un proyecto de Dorgan, Hochnadel y La Rosa. <a href="../informacion.html">Conocé al equipo</a>.</p>
+            </footer>
+
+            <script src="../js/dados.js"></script>
+        </div>
     </body>
 </html>
