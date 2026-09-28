@@ -1,115 +1,268 @@
+// Ruta de la imagen que se usa para el dorso de las cartas (boca abajo)
+// La declaramos como constante porque nunca cambia durante la ejecución.
+const rutaDorso = "/img/cartas/memotest-11.jpg";
+
 // ===== Genera un mazo de cartas mezcladas con pares =====
+// cantPares: cuántos pares distintos va a tener la partida (6, 8 o 10 según el nivel)
+// mazo: array vacío que se recibe desde afuera y se llena "por referencia";
+//       es decir, esta función no devuelve el mazo con objetos, lo va llenando
+//       directamente sobre el array que le pasaron (por eso "cartas" queda
+//       lleno después de llamar a esta función, sin necesidad de reasignarlo)
 
 function generarMazo(cantPares, mazo) {
+    // Array auxiliar que solo guarda las rutas de imagen (strings),
+    // se usa únicamente para controlar que no se repita más de dos veces cada una
     let nuevoMazo = [];
 
-    // Controla cuántas veces puede repetirse cada imagen (máximo 2, para formar un par)
+    // Cuenta cuántas veces "falta" agregar la imagen elegida en esta vuelta.
+    // Arranca en 2 porque cada imagen debe aparecer exactamente 2 veces (un par)
     let par = 2;
 
+    // Se generan cartas hasta completar la cantidad total
+    // (cantPares * 2, porque cada par son 2 cartas)
     while (nuevoMazo.length < cantPares * 2) {
-        // Elegimos una imagen al azar entre las disponibles para este nivel
+        // Elegimos un número de imagen al azar, entre 1 y cantPares
         let cartaRandom = Math.floor(Math.random() * cantPares + 1);
         let urlImg = `/img/cartas/memotest-${cartaRandom}.jpg`;
 
-        // Contamos cuántas veces ya está esa imagen en el mazo
+        // Recorremos lo que ya se agregó al mazo para contar
+        // cuántas veces ya está esta misma imagen
         for (let i = 0; i < nuevoMazo.length; i++) {
             if (nuevoMazo[i] == urlImg) {
-                par--;
+                par--; // cada vez que la encontramos, resta una "vacante" disponible
             }
         }
 
-        // Solo la agregamos si todavía no completó su par
+        // Si "par" sigue siendo distinto de 0, todavía hay lugar para esta imagen
+        // (si ya apareció 2 veces, "par" llegaría a 0 y no se vuelve a agregar)
         if (par != 0) {
             nuevoMazo.push(urlImg);
+
+            // Además de la ruta, armamos un objeto con toda la info que
+            // vamos a necesitar más adelante para jugar: identificador para
+            // comparar, ruta de la imagen, y el estado de la carta en el juego
             let carta = {
-                identificadorImg: cartaRandom,
-                ruta: urlImg,
-                estadoCarta: "oculta",
-                estadoPareja: false
+                identificadorImg: cartaRandom, // número que identifica la imagen (para comparar pares)
+                ruta: urlImg,                  // ruta de la imagen, para mostrarla al voltear la carta
+                estadoCarta: "oculta",         // "oculta" (dorso) o "visible" (imagen descubierta)
+                estadoPareja: false            // true cuando ya forma parte de una pareja encontrada
             };
+
+            // Guardamos el objeto en el array que recibimos por parámetro (mazo/cartas)
             mazo.push(carta);
         }
 
         // Reseteamos el contador para la próxima vuelta del while
         par = 2;
     }
- 
-    return nuevoMazo;
+
+    //generarMazo se llama para llenar el array "cartas", no hace falta que la función regrese algún dato
 }
 
-//Funcion para saber si las dos cartas selecctionadas con iguales
-function sonIguales(cartas, carta1, carta2, parejasEncontradas){
-    let identificador1 = 0;
-    let posicion1 = 0;
-    let identificador2 = 0;
-    let posicion2 = 0;
-    for(let i=0; i<cartas.length; i++){
-        if(carta1 == cartas[i].ruta){
-            identificador1 = cartas[i].identificadorImg;
-            posicion1 = i;
-        }
+// ===== Crea el tablero en el HTML a partir del array de objetos "cartas" =====
+// Recibe el array de objetos ya generado por generarMazo y crea una <img>
+// por cada carta, en el mismo orden en que están guardadas en "cartas".
+// Cada <img> creada se asocia a su posición dentro del array "cartas" (mediante
+// la propiedad personalizada "posicion"), así el evento de click sabe exactamente
+// a qué objeto del array corresponde, sin tener que buscarla por su src.
+function crearTablero(cartasDelMazo) {
+    // Reiniciamos el array de referencias a las <img>, para que quede
+    // sincronizado con el nuevo tablero que estamos por crear
+    imagenesTablero = [];
 
-        if(carta2 == cartas[i].ruta){
-            identificador2 = cartas[i].identificadorImg;
-            posicion2 = i;
+    for (let i = 0; i < cartasDelMazo.length; i++) {
+        // Creamos el elemento <img> por código en vez de armarlo con innerHTML,
+        // porque necesitamos guardarle un addEventListener de click a cada una
+        let img = document.createElement("img");
+        img.src = rutaDorso;
+        img.alt = "Carta boca abajo";
+        img.width = 160;
+        img.height = 160;
+
+        // Guardamos la posición como una propiedad extra del elemento del DOM.
+        // posicion no es un atributo HTML real (no existe <img posicion="..."> en el estándar).
+        // Pero como en JavaScript un elemento del DOM es, en el fondo, un objeto común, puedo agregarle cualquier propiedad nueva que quiera
+        
+        // Esto permite que, cuando el usuario clickee esta <img> puntual,
+        // sepamos inmediatamente qué índice del array "cartas" le corresponde
+        img.posicion = i;
+
+        // Asociamos la función que maneja el click (definida más abajo)
+        img.addEventListener("click", manejarClickCarta);
+
+        //NOTA: No le paso manejarClickCarta() (con paréntesis), sino manejarClickCarta (sin paréntesis, sin ejecutarla).
+        //Esto es porque le estoy pasando la función en sí, para que el navegador la ejecute él mismo en el momento del click.
+        //Si pusiera los paréntesis, JavaScript ejecutaría la función inmediatamente al armar el tablero, en vez de esperar al click.
+
+        // La insertamos en el tablero y la guardamos también en nuestro
+        // array de referencias, para poder modificarla después (ej. al ocultarla)
+        tablero.appendChild(img);
+        imagenesTablero.push(img);
+    }
+}
+
+// ===== Maneja el click sobre una carta del tablero =====
+function manejarClickCarta(evento) {
+    // evento.currentTarget es la <img> específica que fue clickeada
+    let img = evento.currentTarget;
+
+    // Recuperamos la posición que le habíamos asignado en crearTablero,
+    // y con eso ubicamos el objeto carta correspondiente en el array "cartas"
+    let posicion = img.posicion;
+    let carta = cartas[posicion];
+
+    // --- Validaciones: casos en los que el click NO debe hacer nada ---
+
+    // Mientras se están mostrando dos cartas que no coincidieron (esperando
+    // el setTimeout que las vuelve a ocultar), no se puede seleccionar nada más
+    if (bloqueoSeleccion) {
+        return;
+    }
+
+    // Si la carta ya forma parte de una pareja encontrada, no tiene sentido
+    // volver a clickearla (ya quedó resuelta)
+    if (carta.estadoPareja) {
+        return;
+    }
+
+    // Si esta misma carta ya está entre las seleccionadas (el usuario le hizo
+    // doble click), evitamos contarla dos veces
+    let yaSeleccionada = false;
+
+    for (let i = 0; i < seleccionadas.length; i++) {
+        if (seleccionadas[i] === posicion) {
+            yaSeleccionada = true;
         }
     }
 
-    if(identificador1 == identificador2){
-        cartas[posicion1].estadoCarta= "visible";
-        cartas[posicion1].estadoPareja= true;
-
-        cartas[posicion2].estadoCarta= "visible";
-        cartas[posicion2].estadoPareja= true;
-
-        parejasEncontradas++;
+    if (yaSeleccionada) {
+        return;
     }
 
-    return parejasEncontradas;
+    // Si ya hay 2 cartas en evaluación, no se puede seleccionar una tercera
+    // hasta que se resuelva la comparación (coincidan o no)
+    if (seleccionadas.length >= 2) {
+        return;
+    }
+
+    // --- A partir de acá, el click es válido: mostramos la carta ---
+
+    // Cambiamos el estado interno de la carta y la imagen mostrada en pantalla,
+    // pasando del dorso a la imagen real
+    carta.estadoCarta = "visible";
+    img.src = carta.ruta;
+
+    // Agregamos esta posición a la lista de seleccionadas
+    seleccionadas.push(posicion);
+
+    // Si con esta carta ya completamos las 2 seleccionadas, comparamos
+    if (seleccionadas.length === 2) {
+        // Cada par de cartas evaluadas cuenta como un intento, se haya
+        // acertado o no
+        cantidadIntentos++;
+        intentos.innerText = cantidadIntentos;
+
+        // Guardamos las dos posiciones en variables aparte, para no tener
+        // que estar escribiendo "seleccionadas[0]" y "seleccionadas[1]" todo el tiempo
+        let posicion1 = seleccionadas[0];
+        let posicion2 = seleccionadas[1];
+
+        // Comparamos el identificador de imagen (no la posición ni la ruta,
+        // porque dos cartas distintas pueden compartir la misma ruta si son pareja)
+        if (cartas[posicion1].identificadorImg === cartas[posicion2].identificadorImg) {
+            // ----- Coinciden: es una pareja -----
+
+            // Marcamos ambas cartas como encontradas, para que las próximas
+            // validaciones del click las ignoren
+            cartas[posicion1].estadoPareja = true;
+            cartas[posicion2].estadoPareja = true;
+
+            // Actualizamos el contador de parejas en pantalla
+            cantidadParejasEncontradas++;
+            parejasEncontradas.innerText = cantidadParejasEncontradas;
+
+            // Vaciamos la selección: el jugador ya puede elegir las próximas 2 cartas
+            seleccionadas = [];
+
+            // Revisamos si con esta pareja se completó el juego
+            comprobarFinDePartida();
+        } else {
+            // ----- No coinciden -----
+
+            // Bloqueamos la selección para que el jugador no pueda seguir
+            // clickeando mientras se muestran estas dos cartas "erradas"
+            bloqueoSeleccion = true;
+
+            // Esperamos un tiempo (para que el jugador llegue a memorizarlas)
+            // y recién después las volvemos a ocultar
+            setTimeout(function () {
+                cartas[posicion1].estadoCarta = "oculta";
+                cartas[posicion2].estadoCarta = "oculta";
+
+                // Volvemos a mostrar el dorso en las dos <img> correspondientes
+                imagenesTablero[posicion1].src = rutaDorso;
+                imagenesTablero[posicion2].src = rutaDorso;
+
+                // Liberamos la selección y el bloqueo para permitir seguir jugando
+                seleccionadas = [];
+                bloqueoSeleccion = false;
+            }, 3000); // 3 segundos 
+        }
+    }
+}
+
+// ===== Comprueba si el jugador encontró todas las parejas =====
+function comprobarFinDePartida() {
+    // El total de parejas es la mitad de la cantidad de cartas en juego
+    if (cantidadParejasEncontradas === cartas.length / 2) {
+        alert(`¡Felicitaciones! Encontraste todas las parejas en ${cantidadIntentos} intentos. Presioná el boton de reiniciar para guardar la información de la partida e iniciar una nueva.`);
+    }
 }
 
 // ===== CAPTURA DE ELEMENTOS =====
+// Referencias a los elementos del HTML que vamos a leer o modificar durante el juego, capturadas una sola vez al cargar el script
 
-// Contenedor de los campos de configuración (nombre y nivel)
-let campoConfiguracion = document.querySelector("#campoConfiguracion");
-
-// Botón para comenzar la partida
+let campoConfiguracion = document.querySelector("#campoConfiguracion"); // fieldset con nombre y nivel
 let btnComenzar = document.querySelector("#memotestComenzar");
-
-// Contenedor donde se insertan las cartas del tablero
 let tablero = document.querySelector("#tableroCartas");
+let intentos = document.querySelector("#intentos"); // <span> que muestra el número en pantalla
+let parejasEncontradas = document.querySelector("#parejasEncontradas"); // <span> que muestra el número en pantalla
 
-// Texto que muestra la cantidad de intentos
-let intentos = document.querySelector("#intentos");
-
-// Texto que muestra la cantidad de parejas encontradas
-let parejasEncontradas = document.querySelector("#parejasEncontradas");
-
-// El contador numérico
+// Contador numérico real de parejas encontradas (distinto del <span> de arriba,
+// que solo sirve para mostrar texto)
 let cantidadParejasEncontradas = 0;
 
-// Texto que muestra el nivel de dificultad elegido
 let nivelElegido = document.querySelector("#nivelElegido");
-
-// Botón para reiniciar la partida
 let btnReiniciar = document.querySelector("#reiniciar");
 
-// El botón de reiniciar arranca deshabilitado: no tiene sentido reiniciar una partida que todavía no empezó
+// El botón de reiniciar arranca deshabilitado: no tiene sentido reiniciar
+// una partida que todavía no empezó
 btnReiniciar.disabled = true;
 
-// Guarda en qué estado está la partida (a definir cómo se usa más adelante: por ejemplo, 0 = sin empezar, 1 = en curso, 2 = terminada)
-let estadoPartida = 0;
-
-//Array donde se guardara un objeto por carta con su información respectiva
+// Array donde se guarda un objeto por carta con su información respectiva
+// (lo llena generarMazo y lo recorre crearTablero)
 let cartas = [];
+
+// Referencias a las <img> del tablero actual, en el mismo orden que "cartas".
+// Nos permite acceder directamente a una <img> por su posición (por ejemplo,
+// para volver a ponerle el dorso cuando no coinciden dos cartas)
+let imagenesTablero = [];
+
+// Posiciones (índices dentro de "cartas") de las cartas seleccionadas
+// en este momento. Nunca tiene más de 2 elementos
+let seleccionadas = [];
+
+// true mientras se están mostrando dos cartas que no coincidieron,
+// esperando el setTimeout que las vuelve a ocultar. Bloquea nuevos clicks
+let bloqueoSeleccion = false;
+
+// Contador numérico real de intentos (distinto del <span> "intentos")
+let cantidadIntentos = 0;
 
 // ===== Evento: comenzar partida =====
 
 btnComenzar.addEventListener("click", function () {
-    // Nombre ingresado por el jugador
     let nombre = document.querySelector("#memotestJugador").value;
-
-    // Nivel de dificultad seleccionado
     let nivelDificultad = document.querySelector("#nivel").value;
 
     // Validamos que el usuario haya ingresado un nombre
@@ -124,37 +277,23 @@ btnComenzar.addEventListener("click", function () {
         return;
     }
 
-    // Limpiamos el tablero por si había una partida anterior
-    tablero.innerHTML = "";
-
-    // Armamos el mazo según el nivel y generamos las cartas en el tablero
-    let mazo;
+    // Generamos las cartas según el nivel elegido.
     switch (nivelDificultad) {
         case "facil":
-            mazo = generarMazo(6, cartas); // 6 pares = 12 cartas
-            for (let i = 0; i < 12; i++) {
-                tablero.innerHTML += `<img src="${mazo[i]}" alt="Imagen memotest" width="160" height="160">`;
-            }
+            generarMazo(6, cartas); // 6 pares = 12 cartas
             break;
-
         case "medio":
-            mazo = generarMazo(8, cartas); // 8 pares = 16 cartas
-            for (let i = 0; i < 16; i++) {
-                tablero.innerHTML += `<img src="${mazo[i]}" alt="Imagen memotest" width="160" height="160">`;
-            }
+            generarMazo(8, cartas); // 8 pares = 16 cartas
             break;
-
         default:
-            mazo = generarMazo(10, cartas); // 10 pares = 20 cartas
-            for (let i = 0; i < 20; i++) {
-                tablero.innerHTML += `<img src="${mazo[i]}" alt="Imagen memotest" width="160" height="160">`;
-            }
+            generarMazo(10, cartas); // 10 pares = 20 cartas
             break;
     }
 
-    // Reiniciamos los contadores en pantalla
-    intentos.innerText = "0";
-    parejasEncontradas.innerText = "0";
+    // Con "cartas" ya lleno, armamos el tablero visual
+    crearTablero(cartas);
+
+    // Mostramos el nivel elegido en pantalla
     nivelElegido.innerText = `${nivelDificultad}`;
 
     // Bloqueamos la configuración y habilitamos el botón de reiniciar
@@ -166,5 +305,30 @@ btnComenzar.addEventListener("click", function () {
 // ===== Evento: Reiniciar partida =====
 
 btnReiniciar.addEventListener("click", function () {
+    // Reseteamos todo el estado interno del juego
+    cartas = [];
+    imagenesTablero = [];
+    seleccionadas = [];
+    bloqueoSeleccion = false;
+    cantidadIntentos = 0;
+    cantidadParejasEncontradas = 0;
 
+    // Limpiamos el tablero visual
+    tablero.innerHTML = "";
+
+    // Reseteamos los contadores en pantalla
+    intentos.innerText = "0";
+    parejasEncontradas.innerText = "0";
+    nivelElegido.innerText = "";
+
+    // Limpiamos los campos de configuración para que el próximo jugador
+    // no vea el nombre/nivel de la partida anterior
+    document.querySelector("#memotestJugador").value = "";
+    document.querySelector("#nivel").value = "vacio";
+
+    // Volvemos a habilitar la configuración para elegir nombre y nivel de nuevo
+    campoConfiguracion.disabled = false;
+
+    // No tiene sentido reiniciar si todavía no hay partida
+    btnReiniciar.disabled = true;
 });
