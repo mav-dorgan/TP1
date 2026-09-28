@@ -199,8 +199,137 @@ h3 {
 }
 
 /*=========================*/
+/*        BOTONES          */
+/*=========================*/
+
+button {
+    padding: 0.8rem 1.5rem;
+    border: none;
+    border-radius: 0.7rem;
+    background-color: #9F86C0;
+    color: #FFF8E5;
+    font-family: inherit;
+    font-size: 1rem;
+}
+
+button:hover {
+    background-color: #493657;
+    transform: scale(1.03);
+}
+
+button:disabled {
+    opacity: 0.8;
+}
+
+/*=========================*/
 /*      TRIVIA ESTILOS     */
 /*=========================*/
+
+/*SECCIONES*/
+
+#triviaInicio,
+#triviaJuego,
+#triviaFinal {
+    max-width: 60rem;
+    margin: 0 auto;
+    padding: 2rem;
+    border-radius: 1.5rem;
+    background-color: white;
+    box-shadow: 0 0.5rem 1.5rem rgba(73, 54, 87, 0.15);
+    text-align: center;
+}
+
+#triviaInicio, #triviaFinal {
+    background-color: #D2E0BF;
+}
+
+/* TEXTO DE CARGA*/
+
+#triviaEstado {
+    margin: 1rem 0;
+    color: #9F86C0;
+    font-weight: bold;
+}
+
+/*BOTONES*/
+
+#triviaComenzar,
+#triviaReiniciar {
+    display: block;
+    margin: 1.5rem auto 0;
+    background-color: #493657;
+    width: 90%;
+    text-align: center;
+}
+
+#triviaComenzar:hover,
+#triviaReiniciar:hover {
+    background-color: #9F86C0;
+}
+
+/*STATS*/
+
+#triviaStats {
+    display: flex;
+    justify-content: space-between;
+    gap: 1rem;
+    margin-bottom: 2rem;
+    flex-wrap: wrap;
+}
+
+#triviaStats p {
+    margin: 0;
+    padding: 0.8rem 1.2rem;
+    border-radius: 0.7rem;
+    background-color: #D2E0BF;
+    font-weight: bold;
+}
+
+
+/* IMAGEN BANDERA */
+
+#imgBandera {
+    display: flex;
+    justify-content: center;
+    margin: 2rem 0;
+}
+
+#imgBandera img {
+    width: 60%;
+    max-width: 30rem;
+    border-radius: 1rem;
+    box-shadow: 0 0.4rem 1rem rgba(73, 54, 87, 0.2);
+}
+
+
+/* OPCIONES*/
+
+#triviaOpciones {
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+    flex-wrap: wrap;
+    margin: 2rem 0;
+}
+
+#triviaOpciones button {
+    width: 40%;
+    background-color: #BE95C4;
+    color: #493657;
+}
+
+#triviaOpciones button:hover {
+    background-color: #9F86C0;
+    color: #FFF8E5;
+}
+
+#triviaOpciones button:disabled:hover {
+    transform: none;
+    background-color: #BE95C4;
+    color: #493657;
+}
+
+/* RESPUESTAS*/
 
 #triviaOpciones button.triviaCorrecto {
     background-color: #D2E0BF;
@@ -212,3 +341,58 @@ h3 {
     color: #FFF8E5;
 }
 
+/* Evita que hover cambie el color de una respuesta */
+#triviaOpciones button.triviaCorrecto:disabled:hover {
+    background-color: #D2E0BF;
+    color: #493657;
+}
+
+#triviaOpciones button.triviaIncorrecto:disabled:hover {
+    background-color: #DA9797;
+    color: #FFF8E5;
+}
+
+#triviaSiguiente {
+    margin-top: 1rem;
+    background-color: #493657;
+}
+
+
+/* RESULTADO FINAL*/
+
+#triviaFinal p {
+    font-size: 1.3rem;
+}
+
+#triviaResultado {
+    font-size: 2.2rem;
+    color: #493657;
+}
+
+#triviaPuntaje {
+    font-size: 2rem;
+    font-weight: bold;
+}
+
+#triviaJugador {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.8rem;
+    margin: 2rem 0;
+}
+
+#triviaJugador input {
+    width: 60%;
+    padding: 0.8rem;
+    border: 0.15rem solid #9F86C0;
+    border-radius: 0.7rem;
+    background-color: #FFF8E5;
+    color: #493657;
+    font-size: 1rem;
+}
+
+#triviaJugador input:focus {
+    outline: none;
+    border-color: #493657;
+}
