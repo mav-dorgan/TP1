@@ -62,8 +62,9 @@ Dorgan (44448957), Hochnadel (), La Rosa () <br></h2>
 </p>
 
 <p>
-    Cada carta se guarda en un array aparte como un objeto con un identificador de imagen (el número de la imagen), la ruta de la
-    imagen y los estados de la carta (visible u oculta) y de la pareja(true si se encontró y false si aún no).
+    Cada carta se guarda en un array aparte como un objeto con un identificador de imagen
+    (el número de la imagen), la ruta de la imagen y los estados de la carta
+    (visible u oculta) y de la pareja (true si se encontró y false si aún no).
 </p>
 
 <h4>Inicio de la partida</h4>
@@ -76,8 +77,10 @@ Dorgan (44448957), Hochnadel (), La Rosa () <br></h2>
 
 <p>
     Mediante un <code>switch</code> se genera la cantidad de cartas correspondiente al
-    nivel elegido. Las imágenes se agregan al tablero utilizando <code>innerHTML</code>
-    dentro de un ciclo <code>for</code>.
+    nivel elegido. Luego, se utiliza la función <code>crearTablero()</code> para generar
+    las imágenes de las cartas dinámicamente mediante <code>createElement()</code>.
+    Cada imagen comienza mostrando el dorso de la carta y se agrega al tablero mediante
+    <code>appendChild()</code>.
 </p>
 
 <p>
@@ -85,12 +88,40 @@ Dorgan (44448957), Hochnadel (), La Rosa () <br></h2>
     el botón de reinicio.
 </p>
 
-<h4>Comparación de cartas</h4>
+<h4>Interacción con las cartas</h4>
 
 <p>
-    Se creó la función <code>sonIguales()</code>, que compara los identificadores de
-    las imágenes seleccionadas. Si coinciden, las cartas pasan a estado visible y se
-    incrementa la cantidad de parejas encontradas.
+    Se agregó la función <code>manejarClickCarta()</code>, que controla qué sucede
+    cuando el jugador selecciona una carta. Al hacer click, se muestra la imagen
+    correspondiente y se guarda su posición para poder identificarla dentro del array
+    <code>cartas</code>.
+</p>
+
+<p>
+    Se agregaron validaciones para evitar seleccionar una carta que ya forma parte de
+    una pareja, seleccionar la misma carta dos veces o seleccionar una tercera carta
+    mientras todavía se están comparando dos cartas.
+</p>
+
+<p>
+    Cuando se seleccionan dos cartas, se incrementa el contador de intentos y se
+    comparan sus identificadores de imagen. Si coinciden, se marcan como pareja
+    encontrada y permanecen visibles. Si no coinciden, las cartas vuelven a mostrar
+    el dorso después de 3 segundos.
+</p>
+
+<p>
+    Mientras las cartas que no coinciden permanecen visibles, se bloquean nuevos
+    clicks para evitar que el jugador seleccione otras cartas durante ese tiempo.
+</p>
+
+<h4>Finalización de la partida</h4>
+
+<p>
+    Se agregó la función <code>comprobarFinDePartida()</code>, que verifica si se
+    encontraron todas las parejas. Cuando el jugador completa el tablero, se muestra
+    un mensaje indicando la cantidad de intentos realizados y que puede reiniciar
+    el juego para comenzar una nueva partida y guardar los datos de la partida actual.
 </p>
 
 <h4>Reinicio</h4>
@@ -99,6 +130,12 @@ Dorgan (44448957), Hochnadel (), La Rosa () <br></h2>
     El botón <strong>“Reiniciar juego”</strong> elimina las cartas del tablero,
     reinicia los contadores y vuelve a habilitar el formulario para comenzar una
     nueva partida.
+</p>
+
+<p>
+    Además, al reiniciar se cancela cualquier temporizador pendiente y se restablecen
+    los arrays y variables utilizados durante la partida. También se limpian el nombre
+    y el nivel seleccionados anteriormente.
 </p>
 
 <h3>Declaración del uso de IA</h3>
