@@ -63,16 +63,23 @@ Dorgan (44448957), Hochnadel (), La Rosa () <br></h2>
 
 <p>
     Cada carta se guarda en un array aparte como un objeto con un identificador de imagen
-    (el número de la imagen), la ruta de la imagen y los estados de la carta
-    (visible u oculta) y de la pareja (true si se encontró y false si aún no).
+    (el número de la imagen), la ruta de la imagen y el estado de la pareja
+    (<code>true</code> si se encontró y <code>false</code> si aún no).
 </p>
 
 <h4>Inicio de la partida</h4>
 
 <p>
     Al presionar <strong>“Comenzar partida”</strong>, se obtiene el nombre y el nivel
-    seleccionado mediante <code>querySelector()</code>. Antes de comenzar se verifica
-    que el jugador haya ingresado un nombre y seleccionado un nivel.
+    seleccionado mediante <code>querySelector()</code>. Se utiliza <code>trim()</code>
+    para eliminar los espacios al principio y al final del nombre y comprobar que el
+    jugador realmente haya ingresado un nombre.
+</p>
+
+<p>
+    Antes de comenzar se verifica que el jugador haya ingresado un nombre y seleccionado
+    un nivel. Si alguna de estas condiciones no se cumple, se muestra un mensaje y la
+    partida no comienza.
 </p>
 
 <p>
@@ -106,7 +113,8 @@ Dorgan (44448957), Hochnadel (), La Rosa () <br></h2>
 <p>
     Cuando se seleccionan dos cartas, se incrementa el contador de intentos y se
     comparan sus identificadores de imagen. Si coinciden, se marcan como pareja
-    encontrada y permanecen visibles. Si no coinciden, las cartas vuelven a mostrar
+    encontrada, permanecen visibles y se les agrega la clase <code>encontrada</code>
+    para diferenciarlas mediante CSS. Si no coinciden, las cartas vuelven a mostrar
     el dorso después de 3 segundos.
 </p>
 
@@ -119,9 +127,31 @@ Dorgan (44448957), Hochnadel (), La Rosa () <br></h2>
 
 <p>
     Se agregó la función <code>comprobarFinDePartida()</code>, que verifica si se
-    encontraron todas las parejas. Cuando el jugador completa el tablero, se muestra
-    un mensaje indicando la cantidad de intentos realizados y que puede reiniciar
-    el juego para comenzar una nueva partida y guardar los datos de la partida actual.
+    encontraron todas las parejas comparando la cantidad de parejas encontradas con
+    la mitad del total de cartas.
+</p>
+
+<p>
+    Cuando el jugador completa el tablero, la variable <code>partidaGanada</code> pasa
+    a <code>true</code> y se muestra un mensaje indicando la cantidad de intentos
+    realizados y que puede reiniciar el juego para guardar los datos de la partida
+    actual.
+</p>
+
+<h4>Guardado de récords</h4>
+
+<p>
+    Se agregó la función <code>guardarRecord()</code>, que permite guardar el mejor
+    resultado obtenido para cada nivel. Para esto se utiliza <code>localStorage</code>,
+    que permite conservar la información en el navegador.
+</p>
+
+<p>
+    Los datos se guardan en un objeto utilizando <code>JSON.stringify()</code> y se
+    recuperan mediante <code>JSON.parse()</code>. Para cada nivel se almacena el nombre
+    del jugador y la cantidad de intentos del mejor resultado. Si ya existe un récord,
+    solo se reemplaza cuando la nueva partida se completa con una menor cantidad de
+    intentos.
 </p>
 
 <h4>Reinicio</h4>
@@ -133,9 +163,16 @@ Dorgan (44448957), Hochnadel (), La Rosa () <br></h2>
 </p>
 
 <p>
-    Además, al reiniciar se cancela cualquier temporizador pendiente y se restablecen
-    los arrays y variables utilizados durante la partida. También se limpian el nombre
-    y el nivel seleccionados anteriormente.
+    Antes de reiniciar se cancela cualquier temporizador pendiente mediante
+    <code>clearTimeout()</code>. Si la partida fue completada, se guarda el récord
+    correspondiente antes de restablecer los datos de la partida.
+</p>
+
+<p>
+    Además, al reiniciar se restablecen los arrays y variables utilizados durante la
+    partida, incluyendo las cartas, las cartas seleccionadas, los intentos, las parejas
+    encontradas y el estado de la partida. También se limpian el nombre y el nivel
+    seleccionados anteriormente.
 </p>
 
 <h3>Declaración del uso de IA</h3>
