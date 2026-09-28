@@ -1,6 +1,6 @@
 // Ruta de la imagen que se usa para el dorso de las cartas (boca abajo)
 // La declaramos como constante porque nunca cambia durante la ejecución.
-const rutaDorso = "/img/cartas/memotest-11.jpg";
+const rutaDorso = "../img/cartas/memotest-11.jpg";
  
 // ===== Genera un mazo de cartas mezcladas con pares =====
 // cantPares: cuántos pares distintos va a tener la partida (6, 8 o 10 según el nivel)
@@ -23,7 +23,7 @@ function generarMazo(cantPares, mazo) {
     while (nuevoMazo.length < cantPares * 2) {
         // Elegimos un número de imagen al azar, entre 1 y cantPares
         let cartaRandom = Math.floor(Math.random() * cantPares + 1);
-        let urlImg = `/img/cartas/memotest-${cartaRandom}.jpg`;
+        let urlImg = `../img/cartas/memotest-${cartaRandom}.jpg`;
  
         // Recorremos lo que ya se agregó al mazo para contar
         // cuántas veces ya está esta misma imagen
@@ -40,11 +40,10 @@ function generarMazo(cantPares, mazo) {
  
             // Además de la ruta, armamos un objeto con toda la info que
             // vamos a necesitar más adelante para jugar: identificador para
-            // comparar, ruta de la imagen, y el estado de la carta en el juego
+            // comparar, ruta de la imagen, y si la carta ya fue encontrada
             let carta = {
                 identificadorImg: cartaRandom, // número que identifica la imagen (para comparar pares)
                 ruta: urlImg,                  // ruta de la imagen, para mostrarla al voltear la carta
-                estadoCarta: "oculta",         // "oculta" (dorso) o "visible" (imagen descubierta)
                 estadoPareja: false            // true cuando ya forma parte de una pareja encontrada
             };
  
@@ -114,7 +113,8 @@ function manejarClickCarta(evento) {
     // --- Validaciones: casos en los que el click NO debe hacer nada ---
  
     // Mientras se están mostrando dos cartas que no coincidieron (esperando
-    // el setTimeout que las vuelve a ocultar), no se puede seleccionar nada más
+    // el setTimeout que las vuelve a ocultar), no se puede seleccionar nada más.
+    // Este bloqueo también impide seleccionar una tercera carta
     if (bloqueoSeleccion) {
         return;
     }
@@ -139,17 +139,10 @@ function manejarClickCarta(evento) {
         return;
     }
  
-    // Si ya hay 2 cartas en evaluación, no se puede seleccionar una tercera
-    // hasta que se resuelva la comparación (coincidan o no)
-    if (seleccionadas.length >= 2) {
-        return;
-    }
- 
     // --- A partir de acá, el click es válido: mostramos la carta ---
  
-    // Cambiamos el estado interno de la carta, la imagen mostrada en pantalla y el texto alternativo,
-    // pasando del dorso a la imagen real
-    carta.estadoCarta = "visible";
+    // Cambiamos la imagen mostrada en pantalla (del dorso a la imagen real)
+    // y el texto alternativo
     img.src = carta.ruta;
     img.alt = "Carta descubierta";
  
@@ -178,6 +171,10 @@ function manejarClickCarta(evento) {
             cartas[posicion1].estadoPareja = true;
             cartas[posicion2].estadoPareja = true;
  
+            // Les agregamos la clase "encontrada" para que el CSS las muestre distinto
+            imagenesTablero[posicion1].classList.add("encontrada");
+            imagenesTablero[posicion2].classList.add("encontrada");
+ 
             // Actualizamos el contador de parejas en pantalla
             cantidadParejasEncontradas++;
             parejasEncontradas.innerText = cantidadParejasEncontradas;
@@ -197,9 +194,6 @@ function manejarClickCarta(evento) {
             // Esperamos un tiempo (para que el jugador llegue a memorizarlas)
             // y recién después las volvemos a ocultar
             temporizadorOcultar = setTimeout(function () {
-                cartas[posicion1].estadoCarta = "oculta";
-                cartas[posicion2].estadoCarta = "oculta";
- 
                 // Volvemos a mostrar el dorso en las dos <img> correspondientes
                 imagenesTablero[posicion1].src = rutaDorso;
                 imagenesTablero[posicion2].src = rutaDorso;
@@ -225,7 +219,7 @@ function comprobarFinDePartida() {
         partidaGanada = true;
  
         //Mensaje para el usuario
-        alert(`¡Felicitaciones! Encontraste todas las parejas en ${cantidadIntentos} intentos. Presioná el boton de reiniciar para guardar la información de la partida e iniciar una nueva.`);
+        alert(`¡Felicitaciones! Encontraste todas las parejas en ${cantidadIntentos} intentos. Presioná el botón de reiniciar para guardar la información de la partida e iniciar una nueva.`);
     }
 }
  
@@ -307,7 +301,9 @@ let partidaGanada = false;
 // ===== Evento: comenzar partida =====
  
 btnComenzar.addEventListener("click", function () {
-    let nombre = document.querySelector("#memotestJugador").value;
+    // trim() elimina los espacios del principio y del final, así un nombre
+    // formado solo por espacios cuenta como vacío
+    let nombre = document.querySelector("#memotestJugador").value.trim();
     let nivelDificultad = document.querySelector("#nivel").value;
  
     // Validamos que el usuario haya ingresado un nombre
@@ -339,7 +335,7 @@ btnComenzar.addEventListener("click", function () {
     crearTablero(cartas);
  
     // Mostramos el nivel elegido en pantalla
-    nivelElegido.innerText = `${nivelDificultad}`;
+    nivelElegido.innerText = nivelDificultad;
  
     // Bloqueamos la configuración y habilitamos el botón de reiniciar
     // (campoConfiguracion debe ser un <fieldset> para que .disabled funcione)
@@ -357,9 +353,9 @@ btnReiniciar.addEventListener("click", function () {
     // Si la partida se ganó, guardamos el récord ANTES de resetear el estado
     // y de limpiar los campos, porque necesitamos su valor y cantidadIntentos final
     if (partidaGanada) {
-        let nombre = document.querySelector("#memotestJugador").value;
+        let nombre = document.querySelector("#memotestJugador").value.trim();
         let nivel = document.querySelector("#nivel").value;
-
+ 
         guardarRecord(nivel, nombre, cantidadIntentos);
     }
  
@@ -375,10 +371,10 @@ btnReiniciar.addEventListener("click", function () {
     // Limpiamos el tablero visual
     tablero.innerHTML = "";
  
-    // Reseteamos los contadores en pantalla
+    // Reseteamos los contadores en pantalla ("-" es el valor inicial del HTML)
     intentos.innerText = "0";
     parejasEncontradas.innerText = "0";
-    nivelElegido.innerText = "";
+    nivelElegido.innerText = "-";
  
     // Limpiamos los campos de configuración para que el próximo jugador
     // no vea el nombre/nivel de la partida anterior
