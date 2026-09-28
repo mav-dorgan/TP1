@@ -37,6 +37,24 @@ function tirarDado() {
     return Math.floor(Math.random() * 6) + 1;
 }
 
+//Función que decide quién ganó: devuelve "jugador", "maquina" o "empate"
+
+function decidirGanador() {
+
+    //Si la máquina se pasó de 21, gana el jugador (el jugador nunca llega acá pasado de 21)
+    if (totalMaquina > 21) {
+        return "jugador";
+    }
+
+    //Si nadie se pasó, gana quien tenga el total más alto
+    if (totalJugador > totalMaquina) {
+        return "jugador";
+    } else if (totalJugador < totalMaquina) {
+        return "maquina";
+    } else {
+        return "empate";
+    }
+}
 
 //Evento: click en "Comenzar partida"
 
@@ -63,8 +81,7 @@ btnComenzar.addEventListener("click", function () {
 
     mensaje.innerText = "Tu turno, " + nombreJugador + ". ¿Tirás los dados?";
 
-    //Para probar que funciona (después lo borramos)
-    console.log(tirarDado(), tirarDado(), tirarDado());
+
 });
 
 //------------------------------------------------------------------------------------------------------------------------------
@@ -142,43 +159,6 @@ btnPlantarse.addEventListener("click", function () {
     dadoMaquina2.alt = "Segundo dado de la máquina: " + dado2;
     spanTotalMaquina.innerText = totalMaquina;
 
-    mensaje.innerText = "La máquina tiró " + tiradas + " vez/veces y se quedó con " + totalMaquina + ". Vos tenés " + totalJugador + ".";
-
-    //Acá, en el Paso 4, vamos a decidir quién ganó
-    btnNuevaPartida.disabled = false;
-});
-
-//-------------------------------------------------------------------------------------------------------------------------------------------
-
-//Función que decide quién ganó: devuelve "jugador", "maquina" o "empate"
-function decidirGanador() {
-
-    //Si la máquina se pasó de 21, gana el jugador (el jugador nunca llega acá pasado de 21)
-    if (totalMaquina > 21) {
-        return "jugador";
-    }
-
-    //Si nadie se pasó, gana quien tenga el total más alto
-    if (totalJugador > totalMaquina) {
-        return "jugador";
-    } else if (totalJugador < totalMaquina) {
-        return "maquina";
-    } else {
-        return "empate";
-    }
-}
-
-Segundo, en el evento de btnPlantarse, reemplazá estas últimas líneas:
-
-javascript
-    mensaje.innerText = "La máquina tiró " + tiradas + " vez/veces y se quedó con " + totalMaquina + ". Vos tenés " + totalJugador + ".";
-
-    //Acá, en el Paso 4, vamos a decidir quién ganó
-    btnNuevaPartida.disabled = false;
-
-por esto:
-
-javascript
     //Decidimos quién ganó y armamos el mensaje final
     let ganador = decidirGanador();
     let resumen = "La máquina tiró " + tiradas + " vez/veces y se quedó con " + totalMaquina + ". Vos tenés " + totalJugador + ". ";
@@ -192,10 +172,10 @@ javascript
     }
 
     btnNuevaPartida.disabled = false;
+});
 
-Tercero, agregá el evento de "Nueva partida" al final de dados.js:
+//-------------------------------------------------------------------------------------------------------------------------------------------
 
-javascript
 //Evento: click en "Nueva partida"
 
 btnNuevaPartida.addEventListener("click", function () {
@@ -229,3 +209,8 @@ btnNuevaPartida.addEventListener("click", function () {
 
     mensaje.innerText = "Ingresá tu nombre para comenzar.";
 });
+
+//--------------------------------------------------------------------------------------------------------------------------------------------------
+
+
+
