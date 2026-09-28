@@ -5,6 +5,7 @@
 //elementos del html para modificar su contenido y visibilidad
 
 const inicio = document.querySelector ('#triviaInicio');
+const nombreJugador = document.querySelector('#triviaNombre');
 const botonComenzar = document.querySelector ('#triviaComenzar');
 
 const juego = document.querySelector ('#triviaJuego');
@@ -22,9 +23,6 @@ const botonSiguiente = document.querySelector ('#triviaSiguiente');
 const final = document.querySelector ('#triviaFinal');
 const resultado = document.querySelector ('#triviaResultado');
 const puntaje = document.querySelector ('#triviaPuntaje');
-const jugador = document.querySelector ('#triviaJugador');
-const nombreJugador = document.querySelector('#triviaNombre');
-const botonEnviar = document.querySelector ('#enviar')
 const botonReiniciar = document.querySelector ('#triviaReiniciar');
 final.hidden = true;
 
@@ -39,17 +37,35 @@ let paisesUsados = []; //almacena los paises cuyas banderas se usaron para evita
 let vidasJugador = 3;
 let puntos = 0;
 let numeroPregunta = 0;
+let nombre = '';
 
 /*======================
 COMIENZO DEL JUEGO
 ======================= */
 
-botonComenzar.addEventListener ('click', function() {
-    inicio.hidden =true;
-    juego.hidden = false;
-    cargarPaises ();
+//Alamceno el nombre del jugador para comenzar
+botonComenzar.addEventListener ('click', function() { 
+    
+    //compruebo que el nombre no este vacio
+    if (nombreJugador.value.trim() == '') { //el .trim() permite eliminar espacios para evitar campos vacios
+        alert('Ingresá tu nombre para comenzar.');
+        return;
+    }
 
-})
+    nombre = nombreJugador.value.trim();
+
+    inicio.hidden = true;
+    juego.hidden = false;
+
+    //si es la primera vez que se carga el juego, todavia no se realizo el pedido a la API por lo que no hay paises con bandera.
+    //En ese caso se llama a la funcion que realiza el pedido.
+    //Si no es la primera partida, los paises ya fueron cargados y no es necesario hacer un nuevo pedido por lo que directamente se genera una pregunta
+    if (paisesConBandera.length == 0) {
+        cargarPaises();
+    } else {
+        generarPregunta();
+    }
+});
 
 
 /*===================
@@ -289,46 +305,36 @@ function terminarJuego(mensaje) {
 
     juego.hidden = true;
     final.hidden = false;
-    nombreJugador.disabled = false;
-    nombreJugador.value = '';
-    botonEnviar.disabled = false;
 
     resultado.innerHTML = 'Juego terminado: '+ mensaje;
     puntaje.innerHTML = 'Puntaje final: ' + puntos;
-
+    
+    guardarResultado();
 }
 
-//LOCAL STORAGE PARA TABLA DE PUNTAJES
-jugador.addEventListener('submit', function (event) {
-    event.preventDefault();
+//LOCAL STORAGE PARA TABLA DE RECORDS
+function guardarResultado() {
 
-    let nombre = nombreJugador.value;
-    //Almaceno el nombre del jugador y su puntaje en el local storage
-    let resultadoJugador = {
-        nombre: nombre,
-        puntaje: puntos
-    };
+    //busco en el localStorage si hay un resultado ya almacenado
+    let resultadoAnterior = localStorage.getItem('triviaResultado');
 
-    //traigo las cosas guardadas en el local storage para no pisar resultados previos
-    let resultados = localStorage.getItem('triviaResultados');
-
-    //pregunto al getitem() si habia datos ya almacenados. Si los hay, los convierto del JSON a un array, y sino comienzo con un array vacio
-    if (resultados) {
-        resultados = JSON.parse(resultados);
-    } else {
-        resultados = [];
+    if (resultadoAnterior) {
+        resultadoAnterior = JSON.parse(resultadoAnterior);
     }
-    //agrego entonces a dicho array el nuevo objeto con el jugador y puntaje
-    resultados.push(resultadoJugador);
 
-    //y finalmente vuelvo a guardar este nuevo array con los resultados pasados (si habian) + el nuevo
-    localStorage.setItem('triviaResultados', JSON.stringify(resultados));
+    //si no hay ningun resultado se guarda el actual como record. Si ya hay un resultado se almacena el de mayor puntos.
+    if (resultadoAnterior == null || puntos > resultadoAnterior.puntaje) {
 
-    nombreJugador.disabled = true;
-    botonEnviar.disabled = true;
-});
+        let resultadoJugador = {
+            nombre: nombre,
+            puntaje: puntos
+        };
 
-//Boton para reiniciar el juego, resetea todos los puntajes y vida y vuelve a mostrar una pregunta.
+        localStorage.setItem('triviaResultado', JSON.stringify(resultadoJugador));
+    }
+}
+
+//Boton para reiniciar el juego, resetea todos los puntajes y vida y vuelve a mostrar la pantalla de inicio para que se cargue un nuevo nombre.
 
 botonReiniciar.addEventListener('click', function () {
 
@@ -336,9 +342,9 @@ botonReiniciar.addEventListener('click', function () {
     puntos = 0;
     numeroPregunta = 0;
     paisesUsados = [];
+    nombreJugador.value = '';
 
-    juego.hidden = false;
     final.hidden = true;
+    inicio.hidden = true;
 
-    generarPregunta();
 });

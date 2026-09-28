@@ -290,15 +290,15 @@ button:disabled {
 
 /*STATS*/
 
-#triviaStats {
+.stats {
     display: flex;
-    justify-content: space-between;
+    justify-content: center;
     gap: 1rem;
     margin-bottom: 2rem;
     flex-wrap: wrap;
 }
 
-#triviaStats p {
+.stats p {
     margin: 0;
     padding: 0.8rem 1.2rem;
     border-radius: 0.7rem;
@@ -408,21 +408,6 @@ button:disabled {
     text-align: center;
 }
 
-.cartasStats {
-    display: flex;
-    justify-content: center;
-    gap: 1rem;
-    margin: 2rem auto;
-    flex-wrap: wrap;
-}
-
-.cartasStats p {
-    margin: 0;
-    padding: 0.8rem 1.2rem;
-    border-radius: 0.7rem;
-    background-color: #D2E0BF;
-    font-weight: bold;
-}
 
 /*GRILLA DEL TABLERO*/
 
