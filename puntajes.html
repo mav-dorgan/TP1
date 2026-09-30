@@ -1,7 +1,7 @@
 <!DOCTYPE html>
-<html>
+<html lang="es">
     <head>
-         <meta charset="utf-8">
+        <meta charset="utf-8">
         <title>PUNTAJES</title>
         <link href="https://fonts.googleapis.com/css2?family=Carter+One&display=swap" rel="stylesheet">
         <link href="https://fonts.googleapis.com/css2?family=Calistoga&display=swap" rel="stylesheet">
@@ -29,9 +29,56 @@
                         </div>
                     </nav>
             </header>
-            <main>
 
+            <main>
+                <h2>Récords</h2>
+                <p>Los mejores puntajes guardados en este navegador para cada juego.</p>
+
+                <!-- Récords del memotest: uno por nivel de dificultad -->
+                <section id="puntajesCartas">
+
+                    <h3>Memotest</h3>
+
+                    <table id="tablaCartas"> <!--Es el contenedor de toda la tabla-->
+                        <thead> <!--Significa "table head" (cabecera de la tabla)-->
+                            <tr> <!--"Table row" (fila de tabla)-->
+                                <th>Nivel</th> <!--"Table header" (celda de cabecera)-->
+                                <th>Jugador</th>
+                                <th>Mejor puntaje</th>
+                            </tr>
+                        </thead>
+                        <tbody> <!--"Table body" (cuerpo de tabla).-->
+                            <!-- Las filas se generan dinámicamente desde puntajes.js -->
+                        </tbody>
+                    </table>
+
+                </section>
+
+                <!-- Récord del juego de dados: un único récord -->
+                <section id="puntajesDados">
+
+                    <h3>Dados</h3>
+
+                    <p id="recordDadosTexto">Todavía no hay partidas guardadas.</p>
+
+                </section>
+
+                <!-- Récord de la trivia: un único récord -->
+                <section id="puntajesTrivia">
+
+                    <h3>Trivia: Adivina la bandera</h3>
+
+                    <p id="recordTriviaTexto">Todavía no hay partidas guardadas.</p>
+
+                </section>
             </main>
+
+            <footer>
+                <p>&copy; 2026 TP-JUEGOS — Universidad Nacional de las Artes, Informática General.</p>
+                <p>Un proyecto de Dorgan, Hochnadel y La Rosa. <a href="informacion.html">Conocé al equipo</a>.</p>
+            </footer>
+
+            <script src="js/puntajes.js"></script>
         </div>
     </body>
 </html>

@@ -228,13 +228,16 @@ function comprobarFinDePartida() {
 // jugador: nombre de quien ganó
 // intentosFinales: cantidad de intentos que necesitó
 function guardarRecord(nivel, jugador, intentosFinales) {
-    // localStorage solo guarda texto, así que lo que hay guardado se convierte
-    // a objeto con JSON.parse. Si todavía no hay nada, getItem devuelve null
-    // y usamos un objeto vacío
-    let records = JSON.parse(localStorage.getItem("recordsCartas")) || {};
+    // localStorage solo guarda texto, así que lo que hay guardado se convierte a objeto con JSON.parse. Si todavía no hay nada, 
+    // getItem devuelve null y se guarda un objeto vacío
+    let records = JSON.parse(localStorage.getItem("recordsCartas")) || {}; // Objeto de objetos
+
  
-    // Récord actual de este nivel (undefined si nunca se jugó)
-    let recordDelNivel = records[nivel];
+    // Accedo al récord actual de este nivel (undefined si nunca se jugó)
+    let recordDelNivel = records[nivel]; 
+    // Uso corchetes para acceder al objeto en lugar de .nombreClave porque los corchetes le dicen a JavaScript: 
+    // "primero fijate qué valor tiene lo que está adentro de la variable, y después usá ese valor como clave".
+    // Sino js tomaria el nombre de la variable como una clave y no su contenido.
  
     // Guardamos si no había récord, o si este resultado tiene menos intentos
     if (!recordDelNivel || intentosFinales < recordDelNivel.mejorIntentos) {
@@ -346,12 +349,10 @@ btnComenzar.addEventListener("click", function () {
 // ===== Evento: Reiniciar partida =====
  
 btnReiniciar.addEventListener("click", function () {
-    // Cancelamos el setTimeout pendiente (si lo hay) para que no intente
-    // ocultar cartas de una partida que ya se reinició
+    // Cancelamos el setTimeout pendiente (si lo hay) para que no intente ocultar cartas de una partida que ya se reinició
     clearTimeout(temporizadorOcultar);
  
-    // Si la partida se ganó, guardamos el récord ANTES de resetear el estado
-    // y de limpiar los campos, porque necesitamos su valor y cantidadIntentos final
+    // Si la partida se ganó, guardamos el récord ANTES de resetear el estado y de limpiar los campos
     if (partidaGanada) {
         let nombre = document.querySelector("#memotestJugador").value.trim();
         let nivel = document.querySelector("#nivel").value;
