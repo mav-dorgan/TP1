@@ -197,6 +197,12 @@ Dorgan (44448957), Hochnadel (), La Rosa () <br></h2>
     seleccionados anteriormente.
 </p>
 
+<h4>Página de puntajes y guardado de récords</h4>
+
+<p>
+    La página de puntajes lee y muestra el récord de cada juego desde `localStorage`, donde cada uno guarda su resultado bajo una clave distinta (`recordsCartas`, `recordDados`, `triviaResultado`), convertido a texto con `JSON.stringify` y reconstruido con `JSON.parse` al leerlo. El memotest guarda un objeto con un récord por nivel de dificultad (jugador e intentos), porque cada nivel tiene una cantidad distinta de pares; dados y trivia guardan un único récord general (jugador y mejor resultado), ya que no se dividen en categorías. La tabla de records del memotest se genera dinámicamente con `createElement`, recorriendo los tres niveles y mostrando un guion medio en las columnas sin récord; los récords de dados y trivia, al ser un único valor, se muestran como texto simple, con el mensaje por defecto del HTML si todavía no hay nada guardado.
+</p>
+
 <h3>Diseño CSS</h3>
 <p>Para realizar el código CSS del proyecto se buscó crear una única hoja de estilos que pudiera utilizarse en las diferentes páginas y juegos. Primero se establecieron los estilos generales del sitio, como los márgenes, fondos, tipografías y colores, buscando mantener una estética visual coherente. También se utilizó Flexbox para organizar los principales elementos de la página y unidades relativas como rem y % para favorecer la adaptación a distintos tamaños de pantalla.</p>
 
