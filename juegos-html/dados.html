@@ -1,105 +1,56 @@
 <!DOCTYPE html>
 <html lang="es">
+
+    <!--El head no se ve. En el head pongo los metadatos y el título que aparece en la pestaña del navegador-->
     <head>
         <meta charset="utf-8">
-        <title>JUEGO DE DADOS</title>
+        <titile>JUEGO DE DADOS</titile>
+
+         <!--acá linkeo la tipografía que utilizamos en todas las páginas-->
         <link href="https://fonts.googleapis.com/css2?family=Carter+One&display=swap" rel="stylesheet">
         <link href="https://fonts.googleapis.com/css2?family=Calistoga&display=swap" rel="stylesheet">
+
+        <!--acá vinculo con la hoja de estilos. El ../ es para salir de la carpeta en la que estoy 
+        y pasar a la carpeta que contiene todo y que es donde esta el css-->
         <link href="../css/estilos.css" rel="stylesheet">
     </head>
+
+    <!--El body del doc es la prte visible de la pagina, aca ponemos todo el contenido que queremos que se vea-->
     <body>
+
+        <!--este div es la caja que envuelve todo el contenido y ayuda en el diseño del css-->
         <div id="contenedor">
+
+            <!-- ========== ENCABEZADO Y MENÚ igual en todas las páginas para seguir con la coherencia sintáctica y de diseño ========== -->
             <header>
-                <h1></h1>
-                <nav> 
-                        <div class="navInicio">
-                            <a href="../index.html">Inicio</a>
-                        </div>
 
-                        <div class="navJuegos">
-                            <a href="trivia.html">Trivia banderas</a>
-                            <a href="cartas.html">Memotest</a>
-                            <a href="dados.html">Dados</a>
-                            <a href="../puntajes.html">Puntaje</a>
-                        </div>
+                <!--el Nav es el menu de navegación que aparece en el header, va a estar dividido en 3 contenedores div para facilitar diseño-->
+                <nav>
 
-                        <div class="navInfo">
-                            <a href="../informacion.html">Información</a>
-                        </div>
-                    </nav>
-            </header>
-
-            <main>
-                <section>
-                    <h2>DADOS</h2>
-                    <p>Llegá a 21 sin pasarte</p>
-                </section>
-
-                <!--Instrucciones del juego-->
-                <section id="instrucciones">
-                    <h2>Instrucciones</h2>
-                    <ol>
-                        <li>Ingresá tu nombre y apretá "Comenzar partida".</li>
-                        <li>Cada vez que tirás los 2 dados, la suma se acumula en tu total.</li>
-                        <li>Podés tirar todas las veces que quieras, o apretar "Plantarme" para quedarte con tu total.</li>
-                        <li>Si tu total supera 21, perdés.</li>
-                        <li>Si te plantás, juega la máquina: tira hasta llegar a 17 o más.</li>
-                        <li>Gana quien más se acerque a 21 sin pasarse.</li>
-                    </ol>
-                </section>
-
-                <!--Ingreso del nombre del jugador-->
-                <section id="inicio">
-                    <h2>Nueva partida</h2>
-                    <form id="formInicio">
-                        <label for="nombreJugador">Tu nombre:</label>
-                        <input type="text" id="nombreJugador">
-                        <button type="button" id="btnComenzar">Comenzar partida</button>
-                    </form>
-                </section>
-
-                <!--Zona de juego-->
-                <section id="juego">
-                    <h2>Partida</h2>
-
-                    <article id="zonaJugador">
-                        <h3 id="tituloJugador">Jugador</h3>
-                        <img src="../img/dados/dado-0.png" alt="Primer dado del jugador, sin tirar" id="dadoJugador1">
-                        <img src="../img/dados/dado-0.png" alt="Segundo dado del jugador, sin tirar" id="dadoJugador2">
-                        <p>Total: <span id="totalJugador">0</span></p>
-                    </article>
-
-                    <article id="zonaMaquina">
-                        <h3>Máquina</h3>
-                        <img src="../img/dados/dado-0.png" alt="Primer dado de la máquina, sin tirar" id="dadoMaquina1">
-                        <img src="../img/dados/dado-0.png" alt="Segundo dado de la máquina, sin tirar" id="dadoMaquina2">
-                        <p>Total: <span id="totalMaquina">0</span></p>
-                    </article>
-
-                    <!--Acciones disponibles-->
-                    <div id="acciones">
-                        <button type="button" id="btnTirar" disabled>Tirar dados</button>
-                        <button type="button" id="btnPlantarse" disabled>Plantarme</button>
-                        <button type="button" id="btnNuevaPartida" disabled>Nueva partida</button>
+                    <!--Contenedor 1 del nav para el link de la pagina de inicio-->
+                    <div class="navInicio">
+                        <a href="../index.html">INICIO</a>     
                     </div>
 
-                    <!--Estado del juego y resultado-->
-                    <p id="mensaje">Ingresá tu nombre para comenzar.</p>
-                </section>
+                     <!--Contenedor 2 del nav con el menu de navegación de los juegos y el puntaje y el link a cada uno-->
+                    <div class="navJuegos">
+                        <a href="trivia.html">Trivia Banderas</a>
+                        <a href="cartas.html">Memotest</a>
+                        <a href="dados.html">Dados</a>
+                        <a href="../puntajes.html">Puntaje</a>
+                    </div>
+                    
+                     <!--Contenedor 3 del nav para el link de la página de información-->
+                    <div class="navInfo">
+                        <a href="../informacion.html">Información</a>
+                    </div>
+                </nav>
+            </header>
 
-                <!--Récord guardado-->
-                <aside id="record">
-                    <h2>Tu récord</h2>
-                    <p id="textoRecord">Todavía no hay partidas guardadas.</p>
-                </aside>
+            <!-- ========== CONTENIDO PRINCIPAL DE LA PÁGINA ========== -->
+            <main>
+                <h2> Dados: llegá a 33 </h2>
             </main>
-
-            <footer>
-                <p>&copy; 2026 TP-JUEGOS — Universidad Nacional de las Artes, Informática General.</p>
-                <p>Un proyecto de Dorgan, Hochnadel y La Rosa. <a href="../informacion.html">Conocé al equipo</a>.</p>
-            </footer>
-
-            <script src="../js/dados.js"></script>
         </div>
     </body>
 </html>
