@@ -436,3 +436,13 @@ transform: scale(1.03);
     opacity: 0.65;
     box-shadow: 0 0 0 0.2rem #9F86C0;
 }
+
+/*=========================*/
+/*        PUNTAJES         */
+/*========================*/
+
+.puntajes {
+    width: 100%;
+    margin: 3rem auto;
+    padding: 2rem;
+}

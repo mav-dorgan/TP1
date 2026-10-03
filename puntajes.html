@@ -10,8 +10,6 @@
     <body>
         <div id="contenedor">
             <header>
-                <h1>BROWSER GAMES</h1>
-                <p>Un sitio con tres juegos para jugar y competir por el mejor puntaje</p>
                 <nav> 
                         <div class="navInicio">
                             <a href="index.html">Inicio</a>
@@ -35,42 +33,44 @@
                 <p>Los mejores puntajes guardados en este navegador para cada juego.</p>
 
                 <!-- Récords del memotest: uno por nivel de dificultad -->
-                <section id="puntajesCartas">
+                 <div class="tarjetas">
+                    <section id="puntajesCartas" class="tarjeta">
 
-                    <h3>Memotest</h3>
+                        <h3>Memotest</h3>
 
-                    <table id="tablaCartas"> <!--Es el contenedor de toda la tabla-->
-                        <thead> <!--Significa "table head" (cabecera de la tabla)-->
-                            <tr> <!--"Table row" (fila de tabla)-->
-                                <th>Nivel</th> <!--"Table header" (celda de cabecera)-->
-                                <th>Jugador</th>
-                                <th>Mejor puntaje</th>
-                            </tr>
-                        </thead>
-                        <tbody> <!--"Table body" (cuerpo de tabla).-->
-                            <!-- Las filas se generan dinámicamente desde puntajes.js -->
-                        </tbody>
-                    </table>
+                        <table id="tablaCartas" class="puntajes"> <!--Es el contenedor de toda la tabla-->
+                            <thead> <!--Significa "table head" (cabecera de la tabla)-->
+                                <tr> <!--"Table row" (fila de tabla)-->
+                                    <th>Nivel</th> <!--"Table header" (celda de cabecera)-->
+                                    <th>Jugador</th>
+                                    <th>Mejor puntaje</th>
+                                </tr>
+                            </thead>
+                            <tbody> <!--"Table body" (cuerpo de tabla).-->
+                                <!-- Las filas se generan dinámicamente desde puntajes.js -->
+                            </tbody>
+                        </table>
 
-                </section>
+                    </section>
 
-                <!-- Récord del juego de dados: un único récord -->
-                <section id="puntajesDados">
+                    <!-- Récord del juego de dados: un único récord -->
+                    <section id="puntajesDados" class="tarjeta">
 
-                    <h3>Dados</h3>
+                        <h3>Dados</h3>
 
-                    <p id="recordDadosTexto">Todavía no hay partidas guardadas.</p>
+                        <p id="recordDadosTexto" class="puntajes">Todavía no hay partidas guardadas.</p>
 
-                </section>
+                    </section>
 
-                <!-- Récord de la trivia: un único récord -->
-                <section id="puntajesTrivia">
+                    <!-- Récord de la trivia: un único récord -->
+                    <section id="puntajesTrivia" class="tarjeta">
 
-                    <h3>Trivia: Adivina la bandera</h3>
+                        <h3>Trivia: Adivina la bandera</h3>
 
-                    <p id="recordTriviaTexto">Todavía no hay partidas guardadas.</p>
+                        <p id="recordTriviaTexto" class="puntajes">Todavía no hay partidas guardadas.</p>
 
-                </section>
+                    </section>
+                </div>
             </main>
 
             <footer>
