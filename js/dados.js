@@ -10,7 +10,7 @@
 
 // Declaro la constante. const = valor que NO cambia nunca durante el juego.
 // Escribirlo en mayúsculas es una convención para las constantes.
-const OBJETICO= 33;
+const OBJETIVO= 33;
 
 // Declaro las variables. let = valores que SÍ van cambiando mientras se juega.
 let nombreJugador = "";       //El nombre que escribe la persona antes de jugar
@@ -41,13 +41,13 @@ const tituloJugador = document.querySelector("#dadosTitulo");
 const spanTotal = document.querySelector("#dadosTotal");
 const spanTiradas = document.querySelector("#dadosTiradas");
 const imagenDado1 = document.querySelector("#dado1");
-const imagenDado2 = document.querySelector("dado2");
+const imagenDado2 = document.querySelector("#dado2");
 const btnSumar = document.querySelector("#dadosBtnSumar");
 const btnRestar = document.querySelector("#dadosBtnRestar");
 const mensaje = document.querySelector("#dadosMensaje");
 
 //Pantalla 4: final
-const seccionFinal = document.querySelector("dadosFinal");
+const seccionFinal = document.querySelector("#dadosFinal");
 const textoResultado = document.querySelector("#dadosResultado");
 const textoRecordFinal = document.querySelector("#dadosRecordFinal");
 const btnReiniciar = document.querySelector("#dadosBtnReiniciar");
@@ -95,38 +95,30 @@ function mostarRecord() {
 
     // Si record es null, el if lo toma como falso y va al else
     if (record) {
-        textoRecord.innerText = "Récord actual: " + record.jugador + "llegó a 33 en" + record.tiradas + " tiradas";
+        textoRecord.innerText = "Récord actual: " + record.jugador + " llegó a 33 en " + record.tiradas + " tiradas";
     } else { 
-        textoRecord.innerText = "Todavía no hay Record. Podés ser el primero!!";
+        textoRecord.innerText = "Todavía no hay récord. Podés ser el primero!!";
     } 
 }
 
 // Guarda la partida si es mejor que el récord anterior (o si no había ninguno).
 // Devuelve true si se batió el récord y false si no.
-function gurdarRecord() {
     let recordAnterior = JSON.parse(localStorage.getItem("recordDados"));
 
     // El mejor puntaje es el que tiene MENOS tiradas, por eso usamos "<".
     // Si no había récord (null), esta partida es el primer récord.
-    if (recordAnterior == null || tiradas < a recordAnterior.tiradas) {
         // Armamos un objeto con los datos que necesita la página de puntajes
         let nuevoRecord = { jugador: nombreJugador, tiradas: tiradas };
-        localStorage.setItem("recordDados" , JSON.stringify(nuevoRecord));
         return true;
-        }
-    return false;    
 }
 
 // Pasa de la pantalla del juego a la pantalla final.
 function terminarPartida() {
     // Ocultamos el juego y mostramos el final.
     // Acá aparece por primera vez el botón de reiniciar.
-    sectionJuego.hidden = true;
-    sectionFinal.hidden = false;
 
     textoResultado.innerText = "Llegaste a 33 clavado, " + nombreJugador + "! Lo lograste en " + tiradas + " tiradas.";
     // guardarRecord() guarda si corresponde y nos dice si fue récord
-    let esRecord = guardaRecord();
 
     if (esRecord) {
         textoRecordFinal.innerText = "¡Nuevo récord! Quedó guardado en la página de puntajes.";
@@ -173,12 +165,76 @@ function tirar(signo) {
 
     // 7) Si no ganó, le decimos qué le toca hacer:
     if (total > OBJETIVO) {
-        mensaje.innerText = detalle + "Tu total es " + total + ": te pasaste. Ahora tenés que restar!";
     } else {
-        mensaje.innerText = detalle + "Tu total es " + total + ". Te faltan " + (OBJETIVO - total) + "para llegar a 33.";
     }
 
     // 8) Habilitamos el botón que corresponde (sumar o restar)
     actualizarBotones();
 }
+
+
+// ---------- PASO 5: eventos ----------
+// addEventListener("click", función) le dice al botón: "cuando te hagan clic,
+// ejecutá esta función".
+
+// Botón "Continuar": valida el nombre y muestra las instrucciones
+btnContinuar.addEventListener("click" , function () {
+    // .value es lo que escribió la persona. trim() le saca los espacios
+    // de los costados, así "   " cuenta como vacío.
+    let nombre = inputNombre.value.trim();
+
+    if (nombre === "") {
+        errorNombre.innerText = "Tenés que ingresar tu nombre para continuar.";
+        return;     // cortamos: no pasa a la siguiente pantalla
+    }
+
+    nombreJugador = nombre;
+    errorNombre.innerText = "";
+
+    //Una vez validado el nombre y muestra las instrucciones
+    seccionNombre.hidden = true;
+    seccionInstrucciones.hidden = false;
+});
+
+// Botón "Comenzar": oculta las instrucciones y muestra el juego
+btnComenzar.addEventListener("click" , function() {
+    seccionInstrucciones.hidden = true;
+    seccionJuego.hidden = false;
+
+    tituloJugador.innerText = "Jugador: " + nombreJugador;
+    mensaje.innerText = "Tirá los dados para empezar a sumar.";
+    actualizarBotones();    // al empezar (total 0) solo queda habilitado "sumar"
+});
+
+// Botones de tirada: llaman a la misma función con distinto signo
+btnSumar.addEventListener("click" , function() {
+    tirar(1);
+});
+
+btnRestar.addEventListener("click" , function () {
+    tirar(-1);
+});
+
+// Botón "Jugar de nuevo": deja todo como al principio
+btnReiniciar.addEventListener("click" , function() {
+    // Volvemos las variables a cero
+    total = 0;
+    tiradas = 0;
+    nombreJugador = "";
+
+    // Volvemos a mostrar los números y los dados "sin tirar"
+    spanTotal.innerText = 0;
+    spanTiradas.innerText = 0;
+    mostarDados (0, 0);     // dado-0.png es la imagen de "todavía no tiraste"
+    inputNombre.value = "";
+
+    // Volvemos a la primera pantalla
+    seccionFinal.hidden = true;
+    seccionNombre.hidden = false;
+
+    // Actualizamos el récord que se ve en la primera pantalla,
+    // por si cambió en la partida que acaba de terminar
+    mostarRecord();
+});
+
 
