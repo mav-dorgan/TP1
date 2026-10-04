@@ -29,7 +29,7 @@
 
                     <!--Contenedor 1 del nav para el link de la pagina de inicio-->
                     <div class="navInicio">
-                        <a href="../index.html">INICIO</a>     
+                        <a href="../index.html">Inicio</a>     
                     </div>
 
                      <!--Contenedor 2 del nav con el menu de navegación de los juegos y el puntaje y el link a cada uno-->
@@ -92,51 +92,51 @@
 
                     <!-- ////////// PANTALLA 2: el juego (oculta al principio) ////////// -->
 
-                    <section id="dadosJuego" hidden>
+                <section id="dadosJuego" hidden>
 
-                        <!-- El JS reemplaza este texto por el nombre del jugador -->
-                        <h3 id="dadosTitulo">Jugador</h3>
+                    <!-- El JS reemplaza este texto por el nombre del jugador -->
+                    <h3 id="dadosTitulo">Jugador</h3>
 
-                        <!-- class stats muestra los datos en "cajitas" -->
-                        <div class="stats">
-                            <p>Objetivo: 33</p>
+                    <!-- class stats muestra los datos en "cajitas" -->
+                    <div class="stats">
+                        <p>Objetivo: 33</p>
 
-                            <!-- span = un pedacito de texto dentro del párrafo; el JS cambia solo el número -->
-                            <p>Total: <span id="dadosTotal">0</span></p>
-                            <p>Tiradas: <span id="dadosTiradas">0</span></p>
-                        </div>
+                        <!-- span = un pedacito de texto dentro del párrafo; el JS cambia solo el número -->
+                        <p>Total: <span id="dadosTotal">0</span></p>
+                        <p>Tiradas: <span id="dadosTiradas">0</span></p>
+                    </div>
 
-                        <!-- Los dos dados. dado-0.png es la imagen de "todavía no tiraste".
-                         El JS cambia el src (la imagen) y el alt (el texto alternativo) en cada tirada -->
-                        <div id="dadosImagenes">
-                            <img src="../img/dados/dado-0.png" alt="Primer dado, sin tirar" id="dado1">
-                            <img src="../img/dados/dado-0.png" alt="Segundo dado, sin tirar" id="dado2">
-                        </div>
+                    <!-- Los dos dados. dado-0.png es la imagen de "todavía no tiraste".
+                        El JS cambia el src (la imagen) y el alt (el texto alternativo) en cada tirada -->
+                    <div id="dadosImagenes">
+                        <img src="../img/dados/dado-0.png" alt="Primer dado, sin tirar" id="dado1">
+                        <img src="../img/dados/dado-0.png" alt="Segundo dado, sin tirar" id="dado2">
+                    </div>
 
-                        <!-- Los dos botones de tirada.
-                         "Tirar y restar" arranca con disabled (deshabilitado): el JS lo activa recién cuando el jugador se pasa de 33 -->
-                        <div id="dadosAcciones">
-                            <button type="button" id="dadosBtnSumar">Tirar y Sumar</button>
-                            <button type="button" id="dadosBtnRestar" disabled>Tirar y Restar</button>
-                        </div>
+                    <!-- Los dos botones de tirada.
+                        "Tirar y restar" arranca con disabled (deshabilitado): el JS lo activa recién cuando el jugador se pasa de 33 -->
+                    <div id="dadosAcciones">
+                        <button type="button" id="dadosBtnSumar">Tirar y Sumar</button>
+                        <button type="button" id="dadosBtnRestar" disabled>Tirar y Restar</button>
+                    </div>
 
-                         <!-- Acá el JS escribe lo que salió en cada tirada y qué hacer después -->
-                          <p id="dadosMensaje"></p>
-                    </section>
+                        <!-- Acá el JS escribe lo que salió en cada tirada y qué hacer después -->
+                        <p id="dadosMensaje"></p>
+                </section>
 
                     <!-- ////////// PANTALLA 3: final de la partida (oculta al principio) ////////// -->
 
-                    <section id="dadosFinal" hidden>
+                <section id="dadosFinal" hidden class="centrar">
 
-                        <!-- El JS escribe el resultado ("¡Llegaste a 33 clavado!...") -->
-                        <h3 id="dadosResultado"></h3>
+                    <!-- El JS escribe el resultado ("¡Llegaste a 33 clavado!...") -->
+                    <h3 id="dadosResultado"></h3>
 
-                        <!-- El JS escribe si se batió el récord o no -->
-                         <p id="dadosRecordFinal"></p>
+                    <!-- El JS escribe si se batió el récord o no -->
+                        <p id="dadosRecordFinal"></p>
 
-                        <!-- El botón de reiniciar solo existe en esta pantalla: aparece únicamente cuando se ganó -->
-                        <button class="botonLargo" id="dadosBtnReiniciar" type="button">Jugar de nuevo</button>
-                    </section>
+                    <!-- El botón de reiniciar solo existe en esta pantalla: aparece únicamente cuando se ganó -->
+                    <button class="botonLargo" id="dadosBtnReiniciar" type="button">Jugar de nuevo</button>
+                </section>
             </main>
 
             <!-- ============ PIE DE PÁGINA (igual en todas las páginas) ============ -->

@@ -253,12 +253,15 @@ function guardarRecord(nivel, jugador, intentosFinales) {
  
 // ===== CAPTURA DE ELEMENTOS =====
 // Referencias a los elementos del HTML que vamos a leer o modificar durante el juego, capturadas una sola vez al cargar el script
- 
+
+let presentacion = document.querySelector ('#memotestPresentacion');
+let configuracionSeccion = document.querySelector ('#seccionConfiguracion');
 let campoConfiguracion = document.querySelector("#campoConfiguracion"); // fieldset con nombre y nivel
 let btnComenzar = document.querySelector("#memotestComenzar"); // botón que inicia la partida
 let tablero = document.querySelector("#tableroCartas"); // div donde se insertan las cartas
 let intentos = document.querySelector("#intentos"); // <span> que muestra el número en pantalla
 let parejasEncontradas = document.querySelector("#parejasEncontradas"); // <span> que muestra el número en pantalla
+let bloqueJuego = document.querySelector('#juego');
  
 // Contador numérico real de parejas encontradas (distinto del <span> de arriba,
 // que solo sirve para mostrar texto)
@@ -301,9 +304,14 @@ let temporizadorOcultar = null;
 // si hay que guardar el récord
 let partidaGanada = false;
  
+bloqueJuego.hidden = true;
 // ===== Evento: comenzar partida =====
  
 btnComenzar.addEventListener("click", function () {
+    bloqueJuego.hidden = false;
+    configuracionSeccion.hidden = true;
+    presentacion.hidden = true;
+    
     // trim() elimina los espacios del principio y del final, así un nombre
     // formado solo por espacios cuenta como vacío
     let nombre = document.querySelector("#memotestJugador").value.trim();
@@ -361,6 +369,10 @@ btnReiniciar.addEventListener("click", function () {
     }
  
     // Reseteamos todo el estado interno del juego
+    bloqueJuego.hidden = true;
+    configuracionSeccion.hidden = false;
+    presentacion.hidden = false;
+
     cartas = [];
     imagenesTablero = [];
     seleccionadas = [];
