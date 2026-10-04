@@ -24,18 +24,14 @@ let tiradas = 0;              //Cuántas veces tiró el jugador sumando y restan
 // y nos lo "presta" para poder leerlo o modificarlo desde JS.
 // Los ids tienen que estar escritos EXACTAMENTE igual que en dados.html.
 
-// Pantalla 1: nombre
-const seccionNombre = document.querySelector("#dadosNombre");
+// Pantalla 1: inicio (récord + instrucciones + nombre)
+const seccionInicio = document.querySelector("#dadosInicio");
 const textoRecord = document.querySelector("#dadosRecordTexto");
 const inputNombre = document.querySelector("#dadosInputNombre");
 const errorNombre = document.querySelector("#dadosErrorNombre");
 const btnContinuar = document.querySelector("#dadosBtnContinuar");
 
-// Pantalla 2: Instrucciones
-const seccionInstrucciones = document.querySelector("#dadosInstrucciones");
-const btnComenzar = document.querySelector("#dadosBtnComenzar");
-
-//Pantalla 3: Juego
+// Pantalla 2: Juego
 const seccionJuego = document.querySelector("#dadosJuego");
 const tituloJugador = document.querySelector("#dadosTitulo");
 const spanTotal = document.querySelector("#dadosTotal");
@@ -46,7 +42,7 @@ const btnSumar = document.querySelector("#dadosBtnSumar");
 const btnRestar = document.querySelector("#dadosBtnRestar");
 const mensaje = document.querySelector("#dadosMensaje");
 
-//Pantalla 4: final
+// Pantalla 3: Final
 const seccionFinal = document.querySelector("#dadosFinal");
 const textoResultado = document.querySelector("#dadosResultado");
 const textoRecordFinal = document.querySelector("#dadosRecordFinal");
@@ -69,7 +65,7 @@ function tirarDado() {
 // Cambia las dos imágenes según lo que salió y actualiza el texto alternativo (alt).
 // Las imágenes se llaman dado-1.png, dado-2.png... así que armamos el nombre
 // pegando textos con "+".
-function mostarDados(dado1, dado2) {
+function mostrarDados(dado1, dado2) {
     imagenDado1.src = "../img/dados/dado-" + dado1 + ".png";
     imagenDado1.alt = "Primer dado: " + dado1;
     imagenDado2.src = "../img/dados/dado-" + dado2 + ".png";
@@ -87,7 +83,7 @@ function actualizarBotones() {
 }
 
 // Muestra en pantalla el récord que está guardado (si hay uno).
-function mostarRecord() {
+function mostrarRecord() {
     // localStorage guarda TEXTO. Para guardar un objeto lo convertimos a texto
     // con JSON.stringify, y para recuperarlo lo volvemos a convertir con JSON.parse.
     // getItem devuelve null si todavía no se guardó nada con esa clave.
@@ -101,14 +97,16 @@ function mostarRecord() {
     } 
 }
 
-// Guarda la partida si es mejor que el récord anterior (o si no había ninguno).
-// Devuelve true si se batió el récord y false si no.
+// Guarda la partida si es igual o mejor que el récord anterior (o si no había ninguno).
+// Devuelve true si el jugador quedó como dueño del récord y false si no.
 function guardarRecord() {
     let recordAnterior = JSON.parse(localStorage.getItem("recordDados"));
 
-    // El mejor puntaje es el que tiene MENOS tiradas, por eso usamos "<".
+    // El mejor puntaje es el que tiene MENOS tiradas.
+    // Usamos "<=" (menor o igual): si el jugador empata el récord, también lo
+    // reemplaza, así siempre queda guardado el ÚLTIMO que logró el mejor puntaje.
     // Si no había récord (null), esta partida es el primer récord.
-    if (recordAnterior === null || tiradas < recordAnterior.tiradas) {
+    if (recordAnterior === null || tiradas <= recordAnterior.tiradas) {
         // Armamos un objeto con los datos que necesita la página de puntajes
         let nuevoRecord = { jugador: nombreJugador, tiradas: tiradas };
         localStorage.setItem("recordDados", JSON.stringify(nuevoRecord));
@@ -148,7 +146,7 @@ function tirar(signo) {
     let suma = dado1 + dado2;
 
     // 2) Mostramos las imágenes de lo que salió:
-    mostarDados(dado1, dado2);
+    mostrarDados(dado1, dado2);
 
     // 3) Actualizamos el total y la cantidad de tiradas.
     //    Si signo es 1:  total + 1 * suma  -> suma
@@ -188,7 +186,8 @@ function tirar(signo) {
 // addEventListener("click", función) le dice al botón: "cuando te hagan clic,
 // ejecutá esta función".
 
-// Botón "Continuar": valida el nombre y muestra las instrucciones
+// Botón "Continuar": valida el nombre, oculta el inicio (récord, instrucciones
+// y nombre) y muestra el juego
 btnContinuar.addEventListener("click" , function () {
     // .value es lo que escribió la persona. trim() le saca los espacios
     // de los costados, así "   " cuenta como vacío.
@@ -202,14 +201,8 @@ btnContinuar.addEventListener("click" , function () {
     nombreJugador = nombre;
     errorNombre.innerText = "";
 
-    //Una vez validado el nombre y muestra las instrucciones
-    seccionNombre.hidden = true;
-    seccionInstrucciones.hidden = false;
-});
-
-// Botón "Comenzar": oculta las instrucciones y muestra el juego
-btnComenzar.addEventListener("click" , function() {
-    seccionInstrucciones.hidden = true;
+    // Una vez validado el nombre: ocultamos el inicio y mostramos el juego
+    seccionInicio.hidden = true;
     seccionJuego.hidden = false;
 
     tituloJugador.innerText = "Jugador: " + nombreJugador;
@@ -236,20 +229,20 @@ btnReiniciar.addEventListener("click" , function() {
     // Volvemos a mostrar los números y los dados "sin tirar"
     spanTotal.innerText = 0;
     spanTiradas.innerText = 0;
-    mostarDados (0, 0);     // dado-0.png es la imagen de "todavía no tiraste"
+    mostrarDados(0, 0);     // dado-0.png es la imagen de "todavía no tiraste"
     inputNombre.value = "";
 
-    // Volvemos a la primera pantalla
+    // Volvemos a la primera pantalla (récord + instrucciones + nombre)
     seccionFinal.hidden = true;
-    seccionNombre.hidden = false;
+    seccionInicio.hidden = false;
 
     // Actualizamos el récord que se ve en la primera pantalla,
     // por si cambió en la partida que acaba de terminar
-    mostarRecord();
+    mostrarRecord();
 });
 
 
 // ---------- PASO 6: al cargar la página ----------
 // Esta línea está suelta (fuera de cualquier función), así que se ejecuta
 // apenas el navegador carga el archivo: muestra el récord en la pantalla 1.
-mostarRecord();
+mostrarRecord();
