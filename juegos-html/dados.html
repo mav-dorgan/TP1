@@ -70,6 +70,7 @@
 
                              <!-- Párrafo vacío: el JS escribe acá el error si el nombre está vacío -->
                               <p dadosErrorNombre></p>
+                              <p id="dadosErrorNombre"></p>
                         </div>
 
                         <!-- type="button" evita que el botón intente "enviar" algo; solo lo usa el JS -->
@@ -98,6 +99,7 @@
                     <!-- ////////// PANTALLA 3: el juego (oculta al principio) ////////// -->
 
                     <section id="dadosJuego">
+                    <section id="dadosJuego" hidden>
 
                         <!-- El JS reemplaza este texto por el nombre del jugador -->
                         <h3 id="dadosTitulo">Jugador</h3>
@@ -108,6 +110,7 @@
 
                             <!-- span = un pedacito de texto dentro del párrafo; el JS cambia solo el número -->
                             <p>Total <span id="dadosTotal">0</span></p>
+                            <p>Total: <span id="dadosTotal">0</span></p>
                             <p>Tiradas: <span id="dadosTiradas">0</span></p>
                         </div>
 
@@ -123,6 +126,7 @@
                         <div id="dadosAcciones">
                             <button type="button" id="dadosBtnSumar">Tirar y Sumar</button>
                             <button type="button" id="dadosBtnaRestar" disabled>Tirar y Restar</button>
+                            <button type="button" id="dadosBtnRestar" disabled>Tirar y Restar</button>
                         </div>
 
                          <!-- Acá el JS escribe lo que salió en cada tirada y qué hacer después -->
