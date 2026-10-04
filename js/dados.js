@@ -1,216 +1,136 @@
-
-//Declaro las variables 
-
-let nombreJugador = "";
-let totalJugador = 0;
-let totalMaquina = 0;
-
-
-//Elementos del inicio
-
-const inputNombre = document.querySelector("#nombreJugador");
-const btnComenzar = document.querySelector("#btnComenzar");
+// =====================================================
+//   JUEGO DE DADOS: llegar a 33 clavado
+//   Un solo jugador. Se suma hasta llegar a 33; si se
+//   pasa, se resta. Gana con 33 justo. El puntaje es la
+//   cantidad de tiradas: cuantas menos, mejor.
+// =====================================================
 
 
-//Elementos de la zona de juego
+// ---------- PASO 1: variables del juego ----------
 
-const tituloJugador = document.querySelector("#tituloJugador");
-const dadoJugador1 = document.querySelector("#dadoJugador1");
-const dadoJugador2 = document.querySelector("#dadoJugador2");
-const dadoMaquina1 = document.querySelector("#dadoMaquina1");
-const dadoMaquina2 = document.querySelector("#dadoMaquina2");
-const spanTotalJugador = document.querySelector("#totalJugador");
-const spanTotalMaquina = document.querySelector("#totalMaquina");
+// Declaro la constante. const = valor que NO cambia nunca durante el juego.
+// Escribirlo en mayúsculas es una convención para las constantes.
+const OBJETICO= 33;
 
-
-//Botones de acciones y mensaje
-
-const btnTirar = document.querySelector("#btnTirar");
-const btnPlantarse = document.querySelector("#btnPlantarse");
-const btnNuevaPartida = document.querySelector("#btnNuevaPartida");
-const mensaje = document.querySelector("#mensaje");
+// Declaro las variables. let = valores que SÍ van cambiando mientras se juega.
+let nombreJugador = "";       //El nombre que escribe la persona antes de jugar
+let total = 0;                //El número en el que está el jugador ahora
+let tiradas = 0;              //Cuántas veces tiró el jugador sumando y restando
 
 
-//Función que "tira" un dado: devuelve un número entero del 1 al 6
+// ---------- PASO 2: traemos los elementos del HTML ----------
 
+// document.querySelector("#id") busca en el HTML el elemento con ese id
+// y nos lo "presta" para poder leerlo o modificarlo desde JS.
+// Los ids tienen que estar escritos EXACTAMENTE igual que en dados.html.
+
+// Pantalla 1: nombre
+const seccionNombre = document.querySelector("#dadosNombre");
+const textoRecord = document.querySelector("#dadosRecordTexto");
+const inputNombre = document.querySelector("#dadosInputNombre");
+const errorNombre = document.querySelector("#dadosErrorNombre");
+const btnContinuar = document.querySelector("#dadosBtnContinuar");
+
+// Pantalla 2: Instrucciones
+const seccionInstrucciones = document.querySelector("#dadosInstrucciones");
+const btnComenzar = document.querySelector("#dadosBtnComenzar");
+
+//Pantalla 3: Juego
+const seccionJuego = document.querySelector("#dadosJuego");
+const tituloJugador = document.querySelector("#dadosTitulo");
+const spanTotal = document.querySelector("#dadosTotal");
+const spanTiradas = document.querySelector("#dadosTiradas");
+const imagenDado1 = document.querySelector("#dado1");
+const imagenDado2 = document.querySelector("dado2");
+const btnSumar = document.querySelector("#dadosBtnSumar");
+const btnRestar = document.querySelector("#dadosBtnRestar");
+const mensaje = document.querySelector("#dadosMensaje");
+
+//Pantalla 4: final
+const seccionFinal = document.querySelector("dadosFinal");
+const textoResultado = document.querySelector("#dadosResultado");
+const textoRecordFinal = document.querySelector("#dadosRecordFinal");
+const btnReiniciar = document.querySelector("#dadosBtnReiniciar");
+
+
+// ---------- PASO 3: funciones auxiliares ----------
+// Son funciones chiquitas que hacen UNA sola cosa. Después las usamos
+// desde los eventos y desde la función de la tirada.
+
+// "Tira" un dado: devuelve un número entero del 1 al 6.
+//   Math.random()  -> número decimal entre 0 y 0.999...
+//   * 6            -> entre 0 y 5.999...
+//   Math.floor()   -> redondea para abajo: 0, 1, 2, 3, 4 o 5
+//   + 1            -> 1, 2, 3, 4, 5 o 6
 function tirarDado() {
-    return Math.floor(Math.random() * 6) + 1;
+    return Math.floor(Math.random() *6) + 1;
 }
 
-//Función que decide quién ganó: devuelve "jugador", "maquina" o "empate"
-
-function decidirGanador() {
-
-    //Si la máquina se pasó de 21, gana el jugador (el jugador nunca llega acá pasado de 21)
-    if (totalMaquina > 21) {
-        return "jugador";
-    }
-
-    //Si nadie se pasó, gana quien tenga el total más alto
-    if (totalJugador > totalMaquina) {
-        return "jugador";
-    } else if (totalJugador < totalMaquina) {
-        return "maquina";
-    } else {
-        return "empate";
-    }
+// Cambia las dos imágenes según lo que salió y actualiza el texto alternativo (alt).
+// Las imágenes se llaman dado-1.png, dado-2.png... así que armamos el nombre
+// pegando textos con "+".
+function mostarDados(dado1, dado2) {
+    imagenDado1.src = "../img/dados/dado-" + dado1 + ".png";
+    imagenDado1.alt = "Primer dado: " + dado1;
+    imagenDado2.src = "../img/dados/dado-" + dado2 + ".png";
+    imagenDado2.alt = "Segundo dado: " + dado2;
 }
 
-//Evento: click en "Comenzar partida"
+// Decide qué botón se puede usar según dónde está el total:
+//   - total por debajo de 33 -> solo se puede sumar
+//   - total por encima de 33 -> solo se puede restar
+// La comparación (total > OBJETIVO) da true o false, y ese valor se guarda
+// directamente en la propiedad "disabled" del botón.
+function actualizarBotones() {
+    btnSumar.disabled = total > OBJETIVO;
+    btnRestar.disabled = total < OBJETIVO;
+}
 
-btnComenzar.addEventListener("click", function () {
+// Muestra en pantalla el récord que está guardado (si hay uno).
+function mostarRecord() {
+    // localStorage guarda TEXTO. Para guardar un objeto lo convertimos a texto
+    // con JSON.stringify, y para recuperarlo lo volvemos a convertir con JSON.parse.
+    // getItem devuelve null si todavía no se guardó nada con esa clave.
+    let record = JSON.parse(localStorage.getItem("recordDados"));
 
-    nombreJugador = inputNombre.value;
+    // Si record es null, el if lo toma como falso y va al else
+    if (record) {
+        textoRecord.innerText = "Récord actual: " + record.jugador + "llegó a 33 en" + record.tiradas + " tiradas";
+    } else { 
+        textoRecord.innerText = "Todavía no hay Record. Podés ser el primero!!";
+    } 
+}
 
-    //Validación: el nombre no puede estar vacío
-    if (nombreJugador === "") {
-        mensaje.innerText = "Tenés que ingresar tu nombre para comenzar.";
-        return;
-    }
+// Guarda la partida si es mejor que el récord anterior (o si no había ninguno).
+// Devuelve true si se batió el récord y false si no.
+function gurdarRecord() {
+    let recordAnterior = JSON.parse(localStorage.getItem("recordDados"));
 
-    //Mostramos el nombre del jugador como título de su zona
-    tituloJugador.innerText = nombreJugador;
+    // El mejor puntaje es el que tiene MENOS tiradas, por eso usamos "<".
+    // Si no había récord (null), esta partida es el primer récord.
+    if (recordAnterior == null || tiradas < a recordAnterior.tiradas) {
+        // Armamos un objeto con los datos que necesita la página de puntajes
+        let nuevoRecord = { jugador: nombreJugador, tiradas: tiradas };
+        localStorage.setItem("recordDados" , JSON.stringify(nuevoRecord));
+        return true;
+        }
+    return false;    
+}
 
-    //Deshabilitamos el inicio, ya no se puede cambiar el nombre
-    inputNombre.disabled = true;
-    btnComenzar.disabled = true;
+// Pasa de la pantalla del juego a la pantalla final.
+function terminarPartida() {
+    // Ocultamos el juego y mostramos el final.
+    // Acá aparece por primera vez el botón de reiniciar.
+    sectionJuego.hidden = true;
+    sectionFinal.hidden = false;
 
-    //Habilitamos las acciones del turno del jugador
-    btnTirar.disabled = false;
-    btnPlantarse.disabled = false;
+    textoResultado.innerText = "Llegaste a 33 clavado, " + nombreJugador + "! Lo lograste en " + tiradas + " tiradas.";
+    // guardarRecord() guarda si corresponde y nos dice si fue récord
+    let esRecord = guardaRecord();
 
-    mensaje.innerText = "Tu turno, " + nombreJugador + ". ¿Tirás los dados?";
-
-
-});
-
-//------------------------------------------------------------------------------------------------------------------------------
-
-//Evento: click en "Tirar dados"
-
-btnTirar.addEventListener("click", function () {
-
-    //Tiramos los 2 dados
-    let dado1 = tirarDado();
-    let dado2 = tirarDado();
-
-    //Mostramos las imágenes que corresponden a cada resultado
-    dadoJugador1.src = "../img/dados/dado-" + dado1 + ".png";
-    dadoJugador1.alt = "Primer dado del jugador: " + dado1;
-    dadoJugador2.src = "../img/dados/dado-" + dado2 + ".png";
-    dadoJugador2.alt = "Segundo dado del jugador: " + dado2;
-
-    //Acumulador: sumamos la tirada al total del jugador
-    totalJugador = totalJugador + dado1 + dado2;
-    spanTotalJugador.innerText = totalJugador;
-
-    //Si se pasó de 21, pierde
-    if (totalJugador > 21) {
-        mensaje.innerText = "Sacaste " + (dado1 + dado2) + " y llegaste a " + totalJugador + ". ¡Te pasaste de 21, perdiste!";
-        btnTirar.disabled = true;
-        btnPlantarse.disabled = true;
-        btnNuevaPartida.disabled = false;
-        return;
-    }
-
-    //Si llegó justo a 21, no tiene sentido seguir tirando
-    if (totalJugador === 21) {
-        mensaje.innerText = "¡Llegaste a 21 justo! Apretá \"Plantarme\" para que juegue la máquina.";
-        btnTirar.disabled = true;
-        return;
-    }
-
-    //Si sigue en juego, le informamos cómo va
-    mensaje.innerText = "Sacaste " + (dado1 + dado2) + ". Tu total es " + totalJugador + ". ¿Tirás de nuevo o te plantás?";
-});
-
-//-------------------------------------------------------------------------------------------------------------------------------
-
-//Evento: click en "Plantarme"
-
-btnPlantarse.addEventListener("click", function () {
-
-    //Validación: no se puede plantar sin haber tirado al menos una vez
-    if (totalJugador === 0) {
-        mensaje.innerText = "Tenés que tirar los dados al menos una vez antes de plantarte.";
-        return;
-    }
-
-    //El turno del jugador terminó
-    btnTirar.disabled = true;
-    btnPlantarse.disabled = true;
-
-    //Turno de la máquina: tira hasta llegar a 17 o más
-    let tiradas = 0;
-    let dado1;
-    let dado2;
-
-    while (totalMaquina < 17) {
-        dado1 = tirarDado();
-        dado2 = tirarDado();
-        totalMaquina = totalMaquina + dado1 + dado2;
-        tiradas = tiradas + 1;
-    }
-
-    //Mostramos los dados de la última tirada de la máquina
-    dadoMaquina1.src = "../img/dados/dado-" + dado1 + ".png";
-    dadoMaquina1.alt = "Primer dado de la máquina: " + dado1;
-    dadoMaquina2.src = "../img/dados/dado-" + dado2 + ".png";
-    dadoMaquina2.alt = "Segundo dado de la máquina: " + dado2;
-    spanTotalMaquina.innerText = totalMaquina;
-
-    //Decidimos quién ganó y armamos el mensaje final
-    let ganador = decidirGanador();
-    let resumen = "La máquina tiró " + tiradas + " vez/veces y se quedó con " + totalMaquina + ". Vos tenés " + totalJugador + ". ";
-
-    if (ganador === "jugador") {
-        mensaje.innerText = resumen + "¡Ganaste, " + nombreJugador + "!";
-    } else if (ganador === "maquina") {
-        mensaje.innerText = resumen + "Ganó la máquina. ¡Suerte la próxima!";
+    if (esRecord) {
+        textoRecordFinal.innerText = "¡Nuevo récord! Quedó guardado en la página de puntajes.";
     } else {
-        mensaje.innerText = resumen + "¡Empate!";
+        textoRecordFinal.innerText = "No superaste el récord actual. ¡Probá de nuevo con menos tiradas!";
     }
-
-    btnNuevaPartida.disabled = false;
-});
-
-//-------------------------------------------------------------------------------------------------------------------------------------------
-
-//Evento: click en "Nueva partida"
-
-btnNuevaPartida.addEventListener("click", function () {
-
-    //Reiniciamos las variables del juego
-    totalJugador = 0;
-    totalMaquina = 0;
-
-    //Volvemos los dados a su imagen inicial
-    dadoJugador1.src = "../img/dados/dado-0.png";
-    dadoJugador1.alt = "Primer dado del jugador, sin tirar";
-    dadoJugador2.src = "../img/dados/dado-0.png";
-    dadoJugador2.alt = "Segundo dado del jugador, sin tirar";
-    dadoMaquina1.src = "../img/dados/dado-0.png";
-    dadoMaquina1.alt = "Primer dado de la máquina, sin tirar";
-    dadoMaquina2.src = "../img/dados/dado-0.png";
-    dadoMaquina2.alt = "Segundo dado de la máquina, sin tirar";
-
-    //Reiniciamos los totales y el título en pantalla
-    spanTotalJugador.innerText = 0;
-    spanTotalMaquina.innerText = 0;
-    tituloJugador.innerText = "Jugador";
-
-    //Habilitamos de nuevo el inicio y deshabilitamos lo demás
-    inputNombre.value = "";
-    inputNombre.disabled = false;
-    btnComenzar.disabled = false;
-    btnTirar.disabled = true;
-    btnPlantarse.disabled = true;
-    btnNuevaPartida.disabled = true;
-
-    mensaje.innerText = "Ingresá tu nombre para comenzar.";
-});
-
-//--------------------------------------------------------------------------------------------------------------------------------------------------
-
-
-
+}
