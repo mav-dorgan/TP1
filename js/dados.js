@@ -134,3 +134,51 @@ function terminarPartida() {
         textoRecordFinal.innerText = "No superaste el récord actual. ¡Probá de nuevo con menos tiradas!";
     }
 }
+
+
+// ---------- PASO 4: la tirada ----------
+// Los dos botones (sumar y restar) hacen casi lo mismo, así que usan
+// una sola función. El parámetro "signo" vale 1 para sumar y -1 para restar.
+
+function tirar(signo) {
+    // 1) Tiramos los dos dados y calculamos la suma:
+    let dado1 = tirarDado();
+    let dado2 = tirarDado();
+    let suma = dado1 + dado2;
+
+    // 2) Mostramos las imágenes de lo que salió:
+    mostarDados(dado1, dado2);
+
+    // 3) Actualizamos el total y la cantidad de tiradas.
+    //    Si signo es 1:  total + 1 * suma  -> suma
+    //    Si signo es -1: total + -1 * suma -> resta
+    total = total + signo * suma;
+    tiradas = tiradas + 1;
+
+    // 4) Mostramos los números nuevos en pantalla:
+    spanTotal.innerText = total;
+    spanTiradas.innerText = tiradas;
+
+    // 5) Armamos el mensaje. El operador ternario elige entre dos opciones:
+    //   condición ? valor_si_es_true : valor_si_es_false
+
+    let accion = signo == 1 ? "sumaste" : "restaste";
+    let detalle = "sacaste " + dado1 + " + " + dado2 + " = " + suma + " y " + accion + ".";
+
+    // 6) Llegó justo a 33? Entonces ganó.
+    if (total === OBJETIVO){
+        terminarPartida();
+        return;   // return corta la función acá: no hace falta seguir.
+    }
+
+    // 7) Si no ganó, le decimos qué le toca hacer:
+    if (total > OBJETIVO) {
+        mensaje.innerText = detalle + "Tu total es " + total + ": te pasaste. Ahora tenés que restar!";
+    } else {
+        mensaje.innerText = detalle + "Tu total es " + total + ". Te faltan " + (OBJETIVO - total) + "para llegar a 33.";
+    }
+
+    // 8) Habilitamos el botón que corresponde (sumar o restar)
+    actualizarBotones();
+}
+
