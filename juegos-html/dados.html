@@ -51,38 +51,21 @@
             <main>
                 <h2> Dados: llegá a 33 </h2>
 
-                    <!-- El juego tiene 4 PANTALLAS, cada una es una <section>.
+                    <!-- El juego tiene 3 PANTALLAS, cada una es una <section>.
                     Solo se ve una por vez: el JS las muestra y oculta con el atributo "hidden".
-                    Al cargar la página, solo la PANTALLA 1 está visible. -->
+                    Al cargar la página, solo la PANTALLA 1 (inicio) está visible. -->
 
-                    <!-- ////////// PANTALLA 1: pedir el nombre (visible al cargar) ////////// -->
-                    <section id="dadosNombre">
+                    <!-- ////////// PANTALLA 1: inicio con récord, instrucciones y nombre (visible al cargar) ////////// -->
 
-                        <!-- Párrafo vacío: el JS escribe acá cuál es el récord actual -->
-                        <p id="dadosRecordTexto"></p>
+                    <section id="dadosInicio">
 
-                        <!-- formularioJuego class para acomodar label + input -->
-                        <div class="formularioJuego">
+                        <!-- RÉCORD: párrafo vacío, el JS escribe acá cuál es el récord actual -->
+                        <h3 id="dadosRecordTexto"></h3>
 
-                            <!-- El "for" del label tiene que coincidir con el "id" del input: así, al hacer clic en el texto, se selecciona el campo -->
-                             <label for="dadosInputNombre">Ingresá tu nombre</label>
-                             <input type="text" id="dadosInputNombre">
-
-                             <!-- Párrafo vacío: el JS escribe acá el error si el nombre está vacío -->
-                              <p id="dadosErrorNombre"></p>
-                        </div>
-
-                        <!-- type="button" evita que el botón intente "enviar" algo; solo lo usa el JS -->
-                        <button class="botonLargo" id="dadosBtnContinuar" type="button">Continuar</button>
-                    </section>
-
-                     <!-- ////////// PANTALLA 2: instrucciones (oculta al principio) ////////// -->
-
-                     <!-- hidden = el navegador no muestra este elemento hasta que el JS lo saque -->
-                    <section id="dadosInstrucciones" hidden>
+                        <!-- INSTRUCCIONES: se ven desde el principio, igual que en las otras páginas -->
                         <h3>¿Cómo Jugar?</h3>
 
-                        <!-- ol = lista ordenada (numerada); cada li es un paso  de las instrucciones-->
+                        <!-- ol = lista ordenada (numerada); cada li es un paso de las instrucciones -->
                         <ol>
                             <li>Tu objetivo es llegar a <strong>33 justo</strong>, ni más ni menos.</li>
                             <li>Cada vez que tirás, se lanzan <strong>2 dados</strong> y su suma se <strong>agrega</strong> a tu total.</li>
@@ -92,10 +75,22 @@
                             <li>Tu puntaje es la cantidad de tiradas (sumando y restando): <strong>cuantas menos tiradas, mejor</strong>.</li>
                         </ol>
 
-                        <button class="botonLargo" id="dadosBtnComenzar" type="button">Comenzar</button>
+                        <!-- NOMBRE: formularioJuego class para acomodar label + input -->
+                        <div class="formularioJuego">
+
+                            <!-- El "for" del label tiene que coincidir con el "id" del input: así, al hacer clic en el texto, se selecciona el campo -->
+                            <label for="dadosInputNombre">Ingresá tu nombre</label>
+                            <input type="text" id="dadosInputNombre">
+
+                            <!-- Párrafo vacío: el JS escribe acá el error si el nombre está vacío -->
+                            <p id="dadosErrorNombre"></p>
+                        </div>
+
+                        <!-- type="button" evita que el botón intente "enviar" algo; solo lo usa el JS -->
+                        <button class="botonLargo" id="dadosBtnContinuar" type="button">Continuar</button>
                     </section>
 
-                    <!-- ////////// PANTALLA 3: el juego (oculta al principio) ////////// -->
+                    <!-- ////////// PANTALLA 2: el juego (oculta al principio) ////////// -->
 
                     <section id="dadosJuego" hidden>
 
@@ -129,7 +124,7 @@
                           <p id="dadosMensaje"></p>
                     </section>
 
-                    <!-- ////////// PANTALLA 4: final de la partida (oculta al principio) ////////// -->
+                    <!-- ////////// PANTALLA 3: final de la partida (oculta al principio) ////////// -->
 
                     <section id="dadosFinal" hidden>
 
