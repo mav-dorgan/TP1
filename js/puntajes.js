@@ -40,7 +40,7 @@ function mostrarRecordDados() {
 
     // Si no hay récord guardado, dejamos el texto por defecto que ya trae el HTML
     if (record) {
-        texto.innerText = record.jugador + " — llegó a 33 en" + record.tiradas + "tiradas";
+           texto.innerText = record.jugador + " — llegó a 33 en " + record.tiradas + " tiradas";
     }
 }
 
