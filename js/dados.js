@@ -122,9 +122,12 @@ function guardarRecord() {
 function terminarPartida() {
     // Ocultamos el juego y mostramos el final.
     // Acá aparece por primera vez el botón de reiniciar.
+    seccionJuego.hidden = true;
+    seccionFinal.hidden = false;
 
     textoResultado.innerText = "Llegaste a 33 clavado, " + nombreJugador + "! Lo lograste en " + tiradas + " tiradas.";
     // guardarRecord() guarda si corresponde y nos dice si fue récord
+    let esRecord = guardarRecord();
 
     if (esRecord) {
         textoRecordFinal.innerText = "¡Nuevo récord! Quedó guardado en la página de puntajes.";
