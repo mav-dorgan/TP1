@@ -238,3 +238,7 @@ btnReiniciar.addEventListener("click" , function() {
 });
 
 
+// ---------- PASO 6: al cargar la página ----------
+// Esta línea está suelta (fuera de cualquier función), así que se ejecuta
+// apenas el navegador carga el archivo: muestra el récord en la pantalla 1.
+mostarRecord();
