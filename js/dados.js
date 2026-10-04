@@ -103,13 +103,19 @@ function mostarRecord() {
 
 // Guarda la partida si es mejor que el récord anterior (o si no había ninguno).
 // Devuelve true si se batió el récord y false si no.
+function guardarRecord() {
     let recordAnterior = JSON.parse(localStorage.getItem("recordDados"));
 
     // El mejor puntaje es el que tiene MENOS tiradas, por eso usamos "<".
     // Si no había récord (null), esta partida es el primer récord.
+    if (recordAnterior === null || tiradas < recordAnterior.tiradas) {
         // Armamos un objeto con los datos que necesita la página de puntajes
         let nuevoRecord = { jugador: nombreJugador, tiradas: tiradas };
+        localStorage.setItem("recordDados", JSON.stringify(nuevoRecord));
         return true;
+    }
+
+    return false;
 }
 
 // Pasa de la pantalla del juego a la pantalla final.
