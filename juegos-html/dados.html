@@ -69,7 +69,6 @@
                              <input type="text" id="dadosInputNombre">
 
                              <!-- Párrafo vacío: el JS escribe acá el error si el nombre está vacío -->
-                              <p dadosErrorNombre></p>
                               <p id="dadosErrorNombre"></p>
                         </div>
 
@@ -98,7 +97,6 @@
 
                     <!-- ////////// PANTALLA 3: el juego (oculta al principio) ////////// -->
 
-                    <section id="dadosJuego">
                     <section id="dadosJuego" hidden>
 
                         <!-- El JS reemplaza este texto por el nombre del jugador -->
@@ -109,7 +107,6 @@
                             <p>Objetivo: 33</p>
 
                             <!-- span = un pedacito de texto dentro del párrafo; el JS cambia solo el número -->
-                            <p>Total <span id="dadosTotal">0</span></p>
                             <p>Total: <span id="dadosTotal">0</span></p>
                             <p>Tiradas: <span id="dadosTiradas">0</span></p>
                         </div>
@@ -125,7 +122,6 @@
                          "Tirar y restar" arranca con disabled (deshabilitado): el JS lo activa recién cuando el jugador se pasa de 33 -->
                         <div id="dadosAcciones">
                             <button type="button" id="dadosBtnSumar">Tirar y Sumar</button>
-                            <button type="button" id="dadosBtnaRestar" disabled>Tirar y Restar</button>
                             <button type="button" id="dadosBtnRestar" disabled>Tirar y Restar</button>
                         </div>
 
