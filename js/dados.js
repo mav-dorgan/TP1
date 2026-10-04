@@ -165,7 +165,9 @@ function tirar(signo) {
 
     // 7) Si no ganó, le decimos qué le toca hacer:
     if (total > OBJETIVO) {
+        mensaje.innerText = detalle + " Tu total es " + total + ": te pasaste. Ahora tenés que restar!";
     } else {
+        mensaje.innerText = detalle + " Tu total es " + total + ". Te faltan " + (OBJETIVO - total) + " para llegar a 33.";
     }
 
     // 8) Habilitamos el botón que corresponde (sumar o restar)
