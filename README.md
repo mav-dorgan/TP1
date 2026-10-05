@@ -2,7 +2,7 @@
 Lic. en Artes Multimediales <br>
 Informatica General 1- Drelichman TM <br>
 2026 <br>
-Dorgan (44448957), Hochnadel (), La Rosa () <br></h2>
+Dorgan (44448957), Hochnadel (31481155), La Rosa () <br></h2>
 
 <h2>Documentación del proceso</h2>
 
@@ -212,6 +212,16 @@ Dorgan (44448957), Hochnadel (), La Rosa () <br></h2>
 
 <p>Finalmente, se revisó el código para simplificarlo y eliminar reglas repetidas. Este proceso permitió reutilizar estilos entre las diferentes páginas y juegos, mantener una estética uniforme y facilitar futuras modificaciones o la incorporación de nuevos elementos al proyecto.</p>
 
+<h3>Página index.html</h3>
+
+<p>En el desarrollo de la página principal, el index.html, lo primero que se hizo fue pensar a partir de la estructura que se le quería dar. Para que la página se vea de una manera clara e intuitiva, precisa y fácil de navegar para cualquier persona, se partió de un esqueleto con base técnica sencilla. Dentro del HEAD se ubicaron los metadatos, el título sencillo de JUEGOS, la vinculación a la api de google fonts y la vinculación a la hoja de estilos. Lo primero que vemos en el BODY del index.html es el HEADER dónde se puede ver del lado izquierdo un H1 como marca o nombre principal de la página para que sea reconocible fácil. En el centro del header ubicamos el NAV con las páginas de los juegos y puntajes horizontalmente, para que el usuario pueda elergir a que juego entrar siendo éste el tema escencial de la página, sumado a la página de puntajes de todos los juegos. Por último, del lado de la derecha se ubica la página información donde figuran los datos de las desarroladoras del sitio. Para que éste header se vea de ésta manera se colocó el h1 del header en un DIV, el nav de las páginas de los juegos y puntajes en otro DIV y por último se separó del nav la página de información y se colocó en un tercer DIV. Luego proseguimos con el MAIN del body, el cual se dividió en dos SECTION. En el primer section tenemos un H2 con un cartel de bienvenida y un P (párrafo) con la explicación de lo que se trata el sitio. En el segundo section vamos a encontrar un h2 preguntando a que quiere jugar el usuaruio, luego dentro de un div tres ARTICLES con un H3 y un párrafo cada uno donde encontramos el nombre de cada juego y una breve explicación. Por último, pero no menos importante, encontrams el FOOTER, el contenido de pie de página con información pertinente al tp, materia y Universidad y los apellidos de las desarrolladoras con un link a la página de información.html invitando al usuario a conocer el equipo.</p>  
+
+<h3>Página de Dados</h3>
+
+<p>aca todo el proceso html</p>
+<p>aca todo el proceso del js</p>
+
+
 <h3>Declaración del uso de IA</h3>
 
  <p> Antes de empezar el proyecto se utilizó la inteligencia artificial ChatGPT de manera grupal para generar ideas que podíamos utilizar en los juegos. Se le pidió que genere varios juegos de cada tipo programables con el nivel que manejamos (del cual conoce por entrenamiento previo) y que estos sean de dificultad media o alta. Entre estas ideas decidimos tomar el memotest y el juego de dados parecido al blackjack, el cual modificamos un poco para agregarle una complejidad y un mejor sistema de puntaje. </p>
@@ -237,3 +247,5 @@ Dorgan (44448957), Hochnadel (), La Rosa () <br></h2>
     que quedaran más claros y mejor redactados, y detectar y corregir posibles bugs que quedaron
     luego de haber escrito el código.
 </p>
+
+<h4>Declaración de uso de la IA Ana Clara Hochnadel</h4>
