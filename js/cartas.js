@@ -161,8 +161,7 @@ function manejarClickCarta(evento) {
         let posicion1 = seleccionadas[0];
         let posicion2 = seleccionadas[1];
  
-        // Comparamos el identificador de imagen (no la posición ni la ruta,
-        // porque dos cartas distintas pueden compartir la misma ruta si son pareja)
+        // Comparamos el identificador de imagen. Se compara el identificador y no la posición, porque las dos cartas de una pareja están en posiciones distintas.
         if (cartas[posicion1].identificadorImg === cartas[posicion2].identificadorImg) {
             // ----- Coinciden: es una pareja -----
  
@@ -274,7 +273,7 @@ let btnReiniciar = document.querySelector("#reiniciar"); // botón que reinicia 
 // una partida que todavía no empezó
 btnReiniciar.disabled = true;
  
-// Array donde se guarda un objeto por carta con su información respectiva
+// Array donde se guarda un objeto por carta con su información respectiva (número de carta, url y estado de pareja)
 // (lo llena generarMazo y lo recorre crearTablero)
 let cartas = [];
  
@@ -308,10 +307,6 @@ bloqueJuego.hidden = true;
 // ===== Evento: comenzar partida =====
  
 btnComenzar.addEventListener("click", function () {
-    bloqueJuego.hidden = false;
-    configuracionSeccion.hidden = true;
-    presentacion.hidden = true;
-    
     // trim() elimina los espacios del principio y del final, así un nombre
     // formado solo por espacios cuenta como vacío
     let nombre = document.querySelector("#memotestJugador").value.trim();
@@ -329,6 +324,10 @@ btnComenzar.addEventListener("click", function () {
         return;
     }
  
+    bloqueJuego.hidden = false;
+    configuracionSeccion.hidden = true;
+    presentacion.hidden = true;
+
     // Generamos las cartas según el nivel elegido.
     switch (nivelDificultad) {
         case "facil":
