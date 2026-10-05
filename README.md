@@ -2,7 +2,7 @@
 Lic. en Artes Multimediales <br>
 Informatica General 1- Drelichman TM <br>
 2026 <br>
-Dorgan (44448957), Hochnadel (31481155), La Rosa () <br></h2>
+Dorgan (44448957), Hochnadel (31481155), La Rosa (95867452) <br></h2>
 
 <h2>Documentación del proceso</h2>
 
